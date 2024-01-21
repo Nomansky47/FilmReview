@@ -250,3 +250,5 @@ C:\Users\NikitaPortable\source\repos\FilmReview\FilmReview\bin\Debug\net6.0\runt
 C:\Users\NikitaPortable\source\repos\FilmReview\FilmReview\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\NikitaPortable\source\repos\FilmReview\FilmReview\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\NikitaPortable\source\repos\FilmReview\FilmReview\obj\Debug\net6.0\FilmReview.csproj.CopyComplete
+C:\Users\NikitaPortable\source\repos\FilmReview\FilmReview\bin\Debug\net6.0\NomaniusDB.dll
+C:\Users\NikitaPortable\source\repos\FilmReview\FilmReview\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll

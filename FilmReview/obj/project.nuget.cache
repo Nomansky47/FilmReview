@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ChDJYX0NBfnraDHqNnc+GRqY22ki4Um+WO6e8WQQJIRwnliM3FvEiR9P+lr//v0kIGhCofVMBRybxQHyBR4u9g==",
+  "dgSpecHash": "sJ/S5yTABgcpacTTq1Ol9bIDbseBi7M1C+PaQZvfj7K8xmPMzULpmELViAh5AatpNp9X+J+a1dpUkg1W/1nTXA==",
   "success": true,
   "projectFilePath": "C:\\Users\\NikitaPortable\\source\\repos\\FilmReview\\FilmReview\\FilmReview.csproj",
   "expectedPackageFiles": [
@@ -86,7 +86,7 @@
     "C:\\Users\\NikitaPortable\\.nuget\\packages\\microsoft.extensions.caching.memory\\6.0.1\\microsoft.extensions.caching.memory.6.0.1.nupkg.sha512",
     "C:\\Users\\NikitaPortable\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\6.0.0\\microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\NikitaPortable\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\6.0.1\\microsoft.extensions.dependencyinjection.6.0.1.nupkg.sha512",
-    "C:\\Users\\NikitaPortable\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\NikitaPortable\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0\\microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\NikitaPortable\\.nuget\\packages\\microsoft.extensions.logging\\6.0.0\\microsoft.extensions.logging.6.0.0.nupkg.sha512",
     "C:\\Users\\NikitaPortable\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\NikitaPortable\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",

@@ -7,7 +7,7 @@ namespace FilmReview.Models
         [Key]
         public int FilmID { get; set; }
         [Required]
-        public int ImageID { get; set; }
+        public int FilmImageLink { get; set; }
         [Required]
         public string FilmName { get; set; }
         [Required]
@@ -16,5 +16,7 @@ namespace FilmReview.Models
         public string Country { get; set; }
         [Required]
         public float Rating { get; set; } = 0;
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Image> Images { get; set; }
     }
 }
