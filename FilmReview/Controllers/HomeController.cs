@@ -13,7 +13,7 @@ namespace FilmReview.Controllers
             _logger = logger;
         }
 
-        public IActionResult Home()
+        public IActionResult HomePage()
         {
             return View();
         }
