@@ -15,6 +15,8 @@ namespace FilmReview.Models
         public string Text { get; set; }
         [Required]
         public int Likes { get; set; }
+        [Required]
+        public int Dislikes { get; set; }
         [ForeignKey("UserID")]
         public virtual Users Users { get; set; }
         [ForeignKey("FilmID")]
