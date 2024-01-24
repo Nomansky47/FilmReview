@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FilmReview.Models
 {
-    public class Image
+    public class Images
     {
         [Key]
         public int ImageID { get; set; }
@@ -14,6 +14,6 @@ namespace FilmReview.Models
         [Required]
         public string ImageLink { get; set; }
         [ForeignKey("FilmID")]
-        public virtual Film Films { get; set; }
+        public virtual Films Films { get; set; }
     }
 }
