@@ -22,7 +22,7 @@ namespace FilmReview.Models
         [ForeignKey("FilmID")]
         public virtual Films Films { get; set; }
         public int SubCommentID { get; set; }
-        public virtual Icollection<Comments> CommentsCollection
+        public virtual ICollection<Comments> CommentsCollection
         [ForeignKey("CommentIDID")]
         public virtual Comments Comments { get; set; }
     }
