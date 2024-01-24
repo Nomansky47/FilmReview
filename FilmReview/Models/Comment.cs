@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FilmReview.Models
 {
-    public class Comment
+    public class Comments
     {
         [Key]
         public int CommentID { get; set; }
@@ -16,8 +16,8 @@ namespace FilmReview.Models
         [Required]
         public int Likes { get; set; }
         [ForeignKey("UserID")]
-        public virtual User Users { get; set; }
+        public virtual Users Users { get; set; }
         [ForeignKey("FilmID")]
-        public virtual Film Films { get; set; }
+        public virtual Films Films { get; set; }
     }
 }
