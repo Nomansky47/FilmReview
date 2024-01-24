@@ -2,7 +2,7 @@
 
 namespace FilmReview.Models
 {
-    public class User
+    public class Users
     {
         [Key]
         public int UserID { get; set; }
@@ -18,6 +18,6 @@ namespace FilmReview.Models
         public string Name { get; set; }
         [Required]
         public string Patronymic { get; set; }
-        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Comments> Comments { get; set; }
     }
 }
