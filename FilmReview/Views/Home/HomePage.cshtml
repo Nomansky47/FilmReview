@@ -7,3 +7,4 @@
     <h1 class="display-4">Welcome to White Space</h1>
     <img src=@sl />
 </div>
+@(await Html.RenderComponentAsync<FilmReview.Components.Example>(RenderMode.ServerPrerendered, new{}))

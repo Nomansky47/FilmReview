@@ -9,35 +9,43 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = FilmReview
 build_property.RootNamespace = FilmReview
-build_property.ProjectDir = C:\Users\NikitaPortable\source\repos\FilmReview\FilmReview\
+build_property.ProjectDir = C:\Users\Nikita\Documents\GitHub\FilmReview\FilmReview\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\NikitaPortable\source\repos\FilmReview\FilmReview
+build_property.MSBuildProjectDirectory = C:\Users\Nikita\Documents\GitHub\FilmReview\FilmReview
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/NikitaPortable/source/repos/FilmReview/FilmReview/Views/Home/HomePage.cshtml]
+[C:/Users/Nikita/Documents/GitHub/FilmReview/FilmReview/Components/Example.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xFeGFtcGxlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nikita/Documents/GitHub/FilmReview/FilmReview/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nikita/Documents/GitHub/FilmReview/FilmReview/Views/Home/HomePage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxIb21lUGFnZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/NikitaPortable/source/repos/FilmReview/FilmReview/Views/Shared/Error.cshtml]
+[C:/Users/Nikita/Documents/GitHub/FilmReview/FilmReview/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/NikitaPortable/source/repos/FilmReview/FilmReview/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/Nikita/Documents/GitHub/FilmReview/FilmReview/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/NikitaPortable/source/repos/FilmReview/FilmReview/Views/_ViewImports.cshtml]
+[C:/Users/Nikita/Documents/GitHub/FilmReview/FilmReview/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/NikitaPortable/source/repos/FilmReview/FilmReview/Views/_ViewStart.cshtml]
+[C:/Users/Nikita/Documents/GitHub/FilmReview/FilmReview/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/NikitaPortable/source/repos/FilmReview/FilmReview/Views/Shared/_Layout.cshtml]
+[C:/Users/Nikita/Documents/GitHub/FilmReview/FilmReview/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-d957gq8iyg

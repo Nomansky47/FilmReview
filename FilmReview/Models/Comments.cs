@@ -22,8 +22,8 @@ namespace FilmReview.Models
         [ForeignKey("FilmID")]
         public virtual Films Films { get; set; }
         public int SubCommentID { get; set; }
-        public virtual ICollection<Comments> CommentsCollection
+        public virtual ICollection<Comments> CommentsCollection { get;set; }
         [ForeignKey("CommentIDID")]
-        public virtual Comments Comments { get; set; }
+        public virtual Comments OtherComment { get; set; }  
     }
 }

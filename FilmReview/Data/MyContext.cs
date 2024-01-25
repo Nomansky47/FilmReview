@@ -8,9 +8,9 @@ namespace FilmReview.Data
         public MyContext(DbContextOptions<MyContext> options) : base(options)
         {
         }
-        public DbSet<User>? Users { get; set; }
-        public DbSet<Film>? Films { get; set; }
-        public DbSet<Image>? Images { get; set; }
-        public DbSet<Comment>? Comments { get; set; }
+        public DbSet<Users>? Users { get; set; }
+        public DbSet<Films>? Films { get; set; }
+        public DbSet<Images>? Images { get; set; }
+        public DbSet<Comments>? Comments { get; set; }
     }
 }

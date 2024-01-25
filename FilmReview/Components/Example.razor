@@ -1,0 +1,18 @@
+﻿@using Microsoft.AspNetCore.Components
+
+<h1>Button Example</h1>
+<button @onclick="DataChange" class="btn-dark">Click me :)</button>
+<h2>@rofl1</h2>
+<h2>@rofl2</h2>
+
+@code {
+    public string rofl1 { get; set; } = "?";
+    public string rofl2 { get; set; } = "?";
+    public int number { get; set; } = 1;
+
+    private void DataChange()
+    {
+        rofl1 = "rofl1" + number.ToString();
+        rofl1 = "rofl2" + (number +1).ToString();
+    }
+}
