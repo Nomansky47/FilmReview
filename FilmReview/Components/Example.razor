@@ -2,8 +2,8 @@
 
 <h1>Button Example</h1>
 <button @onclick="DataChange" class="btn-dark">Click me :)</button>
-<h2>@rofl1</h2>
-<h2>@rofl2</h2>
+<h2>this is @rofl1</h2>
+<h2>this is @rofl2</h2>
 
 @code {
     public string rofl1 { get; set; } = "?";
@@ -12,7 +12,8 @@
 
     private void DataChange()
     {
-        rofl1 = "rofl1" + number.ToString();
-        rofl1 = "rofl2" + (number +1).ToString();
+        rofl1 = "rofl1 " + number.ToString();
+        rofl2 = "rofl2 " + (number+1).ToString();
+        number++;
     }
 }
