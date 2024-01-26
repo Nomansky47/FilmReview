@@ -1,11 +1,14 @@
 using FilmReview.Data;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using NomaniusDB;
-var builder = WebApplication.CreateBuilder(args);
 
+var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddDbContext<MyContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//DbInitializer.AddMySqlContext<MyContext>(builder.Services, connectionString);
+DbInitializer.AddSqlServerContext<MyContext>(builder.Services, connectionString);
 var app = builder.Build();
 DbInitializer.CreateDbIfNotExists<MyContext>(app);
 if (!app.Environment.IsDevelopment())
@@ -16,6 +19,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -25,5 +29,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=HomePage}/{id?}");
+
 app.MapBlazorHub();
+
 app.Run();

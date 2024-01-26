@@ -18,12 +18,16 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\Nikita\Documents\GitHub\FilmReview\FilmReview
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/Nikita/Documents/GitHub/FilmReview/FilmReview/Components/Example.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xFeGFtcGxlLnJhem9y
+[C:/Users/Nikita/Documents/GitHub/FilmReview/FilmReview/Views/Components/Example.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcG9uZW50c1xFeGFtcGxlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Nikita/Documents/GitHub/FilmReview/FilmReview/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Nikita/Documents/GitHub/FilmReview/FilmReview/Views/Authorization/AuthorizationPage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aG9yaXphdGlvblxBdXRob3JpemF0aW9uUGFnZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Nikita/Documents/GitHub/FilmReview/FilmReview/Views/Home/HomePage.cshtml]

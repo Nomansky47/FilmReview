@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FilmReview.Models
 {
@@ -12,6 +13,8 @@ namespace FilmReview.Models
         [Required]
         public int FilmID { get; set; }
         [Required]
+        public int Row { get; set; } = 0;
+        [Required]
         public string Text { get; set; }
         [Required]
         public int Likes { get; set; }
@@ -21,6 +24,7 @@ namespace FilmReview.Models
         public virtual Users Users { get; set; }
         [ForeignKey("FilmID")]
         public virtual Films Films { get; set; }
-        public int SubCommentID { get; set; }
+        [AllowNull]
+        public int? SubCommentID { get; set; }
     }
 }
