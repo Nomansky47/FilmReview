@@ -7,7 +7,7 @@ namespace FilmReview.Models
         [Key]
         public int FilmID { get; set; }
         [Required]
-        public int FilmImageLink { get; set; }
+        public string FilmImageLink { get; set; }
         [Required]
         public string FilmName { get; set; }
         [Required]

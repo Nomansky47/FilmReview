@@ -1,0 +1,56 @@
+﻿@model IEnumerable<FilmReview.Models.Films>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FilmName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FilmTags)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+           <td>
+               <img src="@item.FilmImageLink"/>
+           </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FilmName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FilmTags)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.FilmID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.FilmID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.FilmID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

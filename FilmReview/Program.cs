@@ -1,7 +1,7 @@
 using FilmReview.Data;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
-using NomaniusDB;
+using NomaniusMVC;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();

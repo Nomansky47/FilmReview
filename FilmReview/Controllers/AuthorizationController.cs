@@ -1,7 +1,7 @@
 ﻿using FilmReview.Data;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NomaniusMVC;
 
 namespace FilmReview.Controllers
 {
@@ -32,6 +32,11 @@ namespace FilmReview.Controllers
                 ViewData["Message"] = "User not found, wrong login or password";
                 return View("AuthorizationPage");
             }
+        }
+        public IActionResult Exit()
+        {
+            HttpContext.DeleteAllSessions();
+            return View("~/Views/Home/HomePage.cshtml");
         }
     }
 }
