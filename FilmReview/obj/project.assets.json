@@ -10860,11 +10860,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Nikita\\Documents\\GitHub\\FilmReview\\FilmReview\\FilmReview.csproj",
+      "projectUniqueName": "D:\\GitHub\\FilmReview\\FilmReview\\FilmReview.csproj",
       "projectName": "FilmReview",
-      "projectPath": "C:\\Users\\Nikita\\Documents\\GitHub\\FilmReview\\FilmReview\\FilmReview.csproj",
+      "projectPath": "D:\\GitHub\\FilmReview\\FilmReview\\FilmReview.csproj",
       "packagesPath": "C:\\Users\\Nikita\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Nikita\\Documents\\GitHub\\FilmReview\\FilmReview\\obj\\",
+      "outputPath": "D:\\GitHub\\FilmReview\\FilmReview\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Nikita\\AppData\\Roaming\\NuGet\\NuGet.Config",

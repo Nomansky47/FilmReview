@@ -6,6 +6,8 @@ using NomaniusDB;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession();
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 //DbInitializer.AddMySqlContext<MyContext>(builder.Services, connectionString);
 DbInitializer.AddSqlServerContext<MyContext>(builder.Services, connectionString);
@@ -23,7 +25,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseSession();
 app.UseAuthorization();
 
 app.MapControllerRoute(

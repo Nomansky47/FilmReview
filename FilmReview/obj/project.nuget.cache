@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "r43lqURPFkRnZ8NF0+E2CGLFA5AVYBQcIiiPruUT17DEUE0RNHEUX2U7iXT4csXyy1QpHjhA/t+F112eslFqlA==",
+  "dgSpecHash": "XI0zyFEu3rHRADhCCknVmqR6qq5BJZsU8KJf4+nWACeV12PGxINRjZEJOrAnQff231dCeu7r1GqmBt3fJmTA5Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Nikita\\Documents\\GitHub\\FilmReview\\FilmReview\\FilmReview.csproj",
+  "projectFilePath": "D:\\GitHub\\FilmReview\\FilmReview\\FilmReview.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Nikita\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\Nikita\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

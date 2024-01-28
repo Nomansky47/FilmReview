@@ -7,4 +7,4 @@
     <h1 class="display-4">Welcome to White Space</h1>
     <img src=@sl />
 </div>
-@(await BlazorPage.Render<FilmReview.Views.Components.Example>(Html))
+@(await BlazorPage.Render<FilmReview.Views.Components.Example>(Html, new { number = 10}))

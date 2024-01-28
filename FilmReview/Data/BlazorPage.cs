@@ -10,5 +10,9 @@ namespace FilmReview.Data
         {
             return html.RenderComponentAsync<T>(RenderMode.ServerPrerendered);
         }
+        public static Task<IHtmlContent> Render<T>(IHtmlHelper html,object obj) where T : IComponent
+        {
+            return html.RenderComponentAsync<T>(RenderMode.ServerPrerendered,obj);
+        }
     }
 }
