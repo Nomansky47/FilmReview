@@ -12,5 +12,6 @@ namespace FilmReview.Data
         public DbSet<Films>? Films { get; set; }
         public DbSet<Images>? Images { get; set; }
         public DbSet<Comments>? Comments { get; set; }
+        public DbSet<FilmReview.Models.Reviews>? Reviews { get; set; }
     }
 }

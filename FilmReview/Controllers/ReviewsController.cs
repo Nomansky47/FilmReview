@@ -10,95 +10,100 @@ using FilmReview.Models;
 
 namespace FilmReview.Controllers
 {
-    public class FilmsController : Controller
+    public class ReviewsController : Controller
     {
         private readonly MyContext _context;
 
-        public FilmsController(MyContext context)
+        public ReviewsController(MyContext context)
         {
             _context = context;
         }
 
-        // GET: Films
+        // GET: Reviews
         public async Task<IActionResult> Index()
         {
-              return _context.Films != null ? 
-                          View(await _context.Films.ToListAsync()) :
-                          Problem("Entity set 'MyContext.Films'  is null.");
+            var myContext = _context.Reviews.Include(r => r.Films).Include(r => r.Users);
+            return View(await myContext.ToListAsync());
         }
 
-        // GET: Films/Details/5
+        // GET: Reviews/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Films == null)
+            if (id == null || _context.Reviews == null)
             {
                 return NotFound();
             }
 
-            var films = await _context.Films
-                .FirstOrDefaultAsync(m => m.FilmID == id);
-            if (films == null)
+            var reviews = await _context.Reviews
+                .Include(r => r.Films)
+                .Include(r => r.Users)
+                .FirstOrDefaultAsync(m => m.ReviewID == id);
+            if (reviews == null)
             {
                 return NotFound();
             }
 
-            return View(films);
+            return View(reviews);
         }
 
-        // GET: Films/Create
+        // GET: Reviews/Create
         public IActionResult Create()
         {
+            ViewData["FilmID"] = new SelectList(_context.Films, "FilmID", "About");
+            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "Name");
             return View();
         }
 
-        // POST: Films/Create
+        // POST: Reviews/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FilmID,FilmImageLink,FilmName,FilmTags,Country,Duration,MPAA,Year,Summ,Total,About")] Films films)
+        public async Task<IActionResult> Create([Bind("ReviewID,UserID,FilmID,Rank")] Reviews reviews)
         {
-                _context.Add(films);
+                _context.Add(reviews);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
         }
 
-        // GET: Films/Edit/5
+        // GET: Reviews/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Films == null)
+            if (id == null || _context.Reviews == null)
             {
                 return NotFound();
             }
 
-            var films = await _context.Films.FindAsync(id);
-            if (films == null)
+            var reviews = await _context.Reviews.FindAsync(id);
+            if (reviews == null)
             {
                 return NotFound();
             }
-            return View(films);
+            ViewData["FilmID"] = new SelectList(_context.Films, "FilmID", "About", reviews.FilmID);
+            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "Name", reviews.UserID);
+            return View(reviews);
         }
 
-        // POST: Films/Edit/5
+        // POST: Reviews/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FilmID,FilmImageLink,FilmName,FilmTags,Country,Duration,MPAA,Year,Summ,Total,About")] Films films)
+        public async Task<IActionResult> Edit(int id, [Bind("ReviewID,UserID,FilmID,Rank")] Reviews reviews)
         {
-            if (id != films.FilmID)
+            if (id != reviews.ReviewID)
             {
                 return NotFound();
             }
 
                 try
                 {
-                    _context.Update(films);
+                    _context.Update(reviews);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FilmsExists(films.FilmID))
+                    if (!ReviewsExists(reviews.ReviewID))
                     {
                         return NotFound();
                     }
@@ -110,46 +115,48 @@ namespace FilmReview.Controllers
                 return RedirectToAction(nameof(Index));
         }
 
-        // GET: Films/Delete/5
+        // GET: Reviews/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Films == null)
+            if (id == null || _context.Reviews == null)
             {
                 return NotFound();
             }
 
-            var films = await _context.Films
-                .FirstOrDefaultAsync(m => m.FilmID == id);
-            if (films == null)
+            var reviews = await _context.Reviews
+                .Include(r => r.Films)
+                .Include(r => r.Users)
+                .FirstOrDefaultAsync(m => m.ReviewID == id);
+            if (reviews == null)
             {
                 return NotFound();
             }
 
-            return View(films);
+            return View(reviews);
         }
 
-        // POST: Films/Delete/5
+        // POST: Reviews/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Films == null)
+            if (_context.Reviews == null)
             {
-                return Problem("Entity set 'MyContext.Films'  is null.");
+                return Problem("Entity set 'MyContext.Reviews'  is null.");
             }
-            var films = await _context.Films.FindAsync(id);
-            if (films != null)
+            var reviews = await _context.Reviews.FindAsync(id);
+            if (reviews != null)
             {
-                _context.Films.Remove(films);
+                _context.Reviews.Remove(reviews);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FilmsExists(int id)
+        private bool ReviewsExists(int id)
         {
-          return (_context.Films?.Any(e => e.FilmID == id)).GetValueOrDefault();
+          return (_context.Reviews?.Any(e => e.ReviewID == id)).GetValueOrDefault();
         }
     }
 }

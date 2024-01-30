@@ -15,7 +15,12 @@
                 <div class="card col" style="margin-bottom: 10px; margin-right: 10px;">
                     <img src="@Model[j].FilmImageLink" alt="@error" width="170" height="250"/>
                     <div class="card-body">
-                        <h5>@Model[j].FilmName @Model[j].Rating</h5>
+                        @{
+                            float Rating = 0;
+                            if (Model[j].Total!=0)
+                             Rating = (float)Model[j].Summ / (float)Model[j].Total;
+                        }
+                        <h5>@Model[j].FilmName @Rating</h5>
                         <p>@Model[j].FilmTags</p>
                         <a class="btn btn-primary" asp-action="FilmDetails" asp-route-id="@Model[j].FilmID">Подробнее</a>
                     </div>

@@ -34,7 +34,10 @@
                 @Html.DisplayNameFor(model => model.Year)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Rating)
+                @Html.DisplayNameFor(model => model.Summ)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.About)
@@ -46,7 +49,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-               <img src="@item.FilmImageLink" />
+                <img src="@item.FilmImageLink" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FilmName)
@@ -67,7 +70,10 @@
                 @Html.DisplayFor(modelItem => item.Year)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Rating)
+                @Html.DisplayFor(modelItem => item.Summ)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.About)

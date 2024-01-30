@@ -21,7 +21,9 @@ namespace FilmReview.Models
         [Required]
         public string Year { get; set; }
         [Required]
-        public float Rating { get; set; } = 0;
+        public int Summ { get; set; } = 0;
+        [Required]
+        public int Total { get; set; } = 0;
         [Required]
         public string About { get; set; }
         public virtual ICollection<Comments> Comments { get; set; }
