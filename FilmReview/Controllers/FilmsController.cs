@@ -56,7 +56,7 @@ namespace FilmReview.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FilmID,FilmImageLink,FilmName,FilmTags,Country,Rating")] Films films)
+        public async Task<IActionResult> Create([Bind("FilmID,FilmImageLink,FilmName,FilmTags,Country,Duration,MPAA,Year,Rating,About")] Films films)
         {
                 _context.Add(films);
                 await _context.SaveChangesAsync();
@@ -84,7 +84,7 @@ namespace FilmReview.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FilmID,FilmImageLink,FilmName,FilmTags,Country,Rating")] Films films)
+        public async Task<IActionResult> Edit(int id, [Bind("FilmID,FilmImageLink,FilmName,FilmTags,Country,Duration,MPAA,Year,Rating,About")] Films films)
         {
             if (id != films.FilmID)
             {

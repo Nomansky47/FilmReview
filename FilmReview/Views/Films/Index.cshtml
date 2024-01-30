@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.FilmImageLink)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.FilmName)
             </th>
             <th>
@@ -22,7 +25,19 @@
                 @Html.DisplayNameFor(model => model.Country)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MPAA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Year)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.About)
             </th>
             <th></th>
         </tr>
@@ -30,9 +45,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-           <td>
-               <img src="@item.FilmImageLink"/>
-           </td>
+            <td>
+               <img src="@item.FilmImageLink" />
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FilmName)
             </td>
@@ -43,7 +58,19 @@
                 @Html.DisplayFor(modelItem => item.Country)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MPAA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.About)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.FilmID">Edit</a> |

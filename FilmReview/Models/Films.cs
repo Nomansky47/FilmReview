@@ -15,7 +15,15 @@ namespace FilmReview.Models
         [Required]
         public string Country { get; set; }
         [Required]
+        public string Duration { get; set; }
+        [Required]
+        public string MPAA { get; set; }
+        [Required]
+        public string Year { get; set; }
+        [Required]
         public float Rating { get; set; } = 0;
+        [Required]
+        public string About { get; set; }
         public virtual ICollection<Comments> Comments { get; set; }
         public virtual ICollection<Images> Images { get; set; }
     }

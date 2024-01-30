@@ -25,7 +25,7 @@ namespace FilmReview.Controllers
                     HttpContext.setAdmin(true);
                 else
                     HttpContext.setAdmin(false);
-                return View("~/Views/Home/HomePage.cshtml");
+                return RedirectToAction("HomePage","Home");
             }
             else
             {
@@ -36,7 +36,7 @@ namespace FilmReview.Controllers
         public IActionResult Exit()
         {
             HttpContext.DeleteAllSessions();
-            return View("~/Views/Home/HomePage.cshtml");
+            return RedirectToAction("HomePage", "Home");
         }
     }
 }
