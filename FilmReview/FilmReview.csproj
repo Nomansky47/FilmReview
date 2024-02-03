@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.26" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Analyzers" Version="6.0.26" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.26" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.26" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.26" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="6.0.26" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.26" />
@@ -24,9 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="NomaniusDB">
-      <HintPath>NomaniusDB.dll</HintPath>
-    </Reference>
     <Reference Include="NomaniusMVC">
       <HintPath>NomaniusMVC.dll</HintPath>
     </Reference>

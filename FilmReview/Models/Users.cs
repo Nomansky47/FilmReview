@@ -18,6 +18,8 @@ namespace FilmReview.Models
         public string Name { get; set; }
         [Required]
         public string Patronymic { get; set; }
+
         public virtual ICollection<Comments> Comments { get; set; }
+        public virtual ICollection<Reviews> Reviews { get; set; }
     }
 }

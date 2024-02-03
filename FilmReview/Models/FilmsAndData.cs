@@ -4,5 +4,6 @@
     {
         public Films Film { get; set; }
         public bool? isAdmin { get; set; }
+        public int? currentUserID { get; set; }
     }
 }

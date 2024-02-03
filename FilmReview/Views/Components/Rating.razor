@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNetCore.Components
+@using FilmReview.Models
+@using FilmReview.Data
+@using Microsoft.EntityFrameworkCore
+<img src="@FilmsAndData.Film.FilmImageLink" />
+@{
+    float result =(float)FilmsAndData.Film.Summ / (float)FilmsAndData.Film.Total;
+}
+<h1>@result </h1>
+<h4>О фильме: @FilmsAndData.Film.About</h4>
+<h5>Страна: @FilmsAndData.Film.Country | Год: @FilmsAndData.Film.Year </h5>
+<h5>Длительность: @FilmsAndData.Film.Duration | MPAA: @FilmsAndData.Film.MPAA </h5>
+<EditForm Model="array">
+<InputSelect  @bind-Value="selectedRating">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+</InputSelect>
+</EditForm>
+<button @onclick="RateFilm">Rate</button>
+
+@code {
+    public int[] array = new int[5];
+    [Parameter]
+    public FilmsAndData FilmsAndData { get; set; }
+    [Inject]
+    private MyContext _context{ get; set; }
+    private int selectedRating;
+    private async Task RateFilm()
+    {
+        if (selectedRating>0&&selectedRating<6)
+        {
+        Reviews review = new Reviews();
+        review.UserID =(int)FilmsAndData.currentUserID;
+        review.FilmID = FilmsAndData.Film.FilmID;
+        review.Rank = selectedRating;
+        _context.Reviews.Add(review);
+        await _context.SaveChangesAsync();
+        }
+    }
+}

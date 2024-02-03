@@ -26,10 +26,12 @@ namespace FilmReview.Controllers
         public async Task<IActionResult> FilmDetails(int id)
         {
             var films = await _context.Films.ToListAsync();
-            FilmsAndData dataFilm = new FilmsAndData();
-            dataFilm.Film = films.FirstOrDefault(f => f.FilmID == id);
-            dataFilm.isAdmin = DataSessions.isAdmin(HttpContext);
-            return View(dataFilm);
+            FilmsAndData FilmsAndData = new FilmsAndData();
+            FilmsAndData.Film = films.FirstOrDefault(f => f.FilmID == id);
+            FilmsAndData.isAdmin = DataSessions.isAdmin(HttpContext);
+            if (HttpContext.GetSession("userid")!=null)
+            FilmsAndData.currentUserID = int.Parse(HttpContext.GetSession("userid"));
+            return View(FilmsAndData);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

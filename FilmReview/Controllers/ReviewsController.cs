@@ -111,8 +111,10 @@ namespace FilmReview.Controllers
                     {
                         throw;
                     }
-                }
-                return RedirectToAction(nameof(Index));
+            }
+            ViewData["FilmID"] = new SelectList(_context.Films, "FilmID", "About", reviews.FilmID);
+            ViewData["UserID"] = new SelectList(_context.Users, "UserID", "Name", reviews.UserID);
+            return View(reviews);
         }
 
         // GET: Reviews/Delete/5

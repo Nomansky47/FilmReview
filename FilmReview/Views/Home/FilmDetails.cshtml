@@ -5,14 +5,10 @@
     string error="https://img.freepik.com/free-vector/glitch-error-404-page-background_23-2148072411.jpg?size=626&ext=jpg";
     //width ширина height высота
 }
-<img src="@Model.Film.FilmImageLink"/>
-<h4>О фильме: @Model.Film.About</h4>
-<h5>Страна: @Model.Film.Country | Год: @Model.Film.Year </h5>
-<h5>Длительность: @Model.Film.Duration | MPAA: @Model.Film.MPAA </h5>
 @if(Model.isAdmin!=null)
 {
     <h5>Вы авторизованы</h5>
-
+    @(await BlazorPage.Render<FilmReview.Views.Components.Rating>(Html,new {FilmsAndData=Model}))
 }
 else
 {
