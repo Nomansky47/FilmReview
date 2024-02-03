@@ -26,11 +26,18 @@ namespace FilmReview.Controllers
         public async Task<IActionResult> FilmDetails(int id)
         {
             var films = await _context.Films.ToListAsync();
+            var list = await _context.Reviews.ToListAsync();
             FilmsAndData FilmsAndData = new FilmsAndData();
             FilmsAndData.Film = films.FirstOrDefault(f => f.FilmID == id);
             FilmsAndData.isAdmin = DataSessions.isAdmin(HttpContext);
             if (HttpContext.GetSession("userid")!=null)
             FilmsAndData.currentUserID = int.Parse(HttpContext.GetSession("userid"));
+            var review = list.FirstOrDefault(p => p.FilmID == FilmsAndData.Film.FilmID && p.UserID == FilmsAndData.currentUserID);
+            if (review != null)
+            {
+                FilmsAndData.Rank = review.Rank;
+                FilmsAndData.ReviewID=review.ReviewID;
+            }
             return View(FilmsAndData);
         }
 

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace FilmReview.Models
 {
@@ -26,8 +27,11 @@ namespace FilmReview.Models
         public int Total { get; set; } = 0;
         [Required]
         public string About { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Comments> Comments { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Images> Images { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Reviews> Reviews { get; set; }
     }
 }

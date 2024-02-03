@@ -10,6 +10,10 @@
 <h4>О фильме: @FilmsAndData.Film.About</h4>
 <h5>Страна: @FilmsAndData.Film.Country | Год: @FilmsAndData.Film.Year </h5>
 <h5>Длительность: @FilmsAndData.Film.Duration | MPAA: @FilmsAndData.Film.MPAA </h5>
+@if (FilmsAndData.Rank != null)
+{
+    <h4>Вы поставили рейтинг @FilmsAndData.Rank из 5</h4>
+}
 <EditForm Model="array">
 <InputSelect  @bind-Value="selectedRating">
     <option value="1">1</option>
@@ -30,14 +34,21 @@
     private int selectedRating;
     private async Task RateFilm()
     {
-        if (selectedRating>0&&selectedRating<6)
+        if (selectedRating > 0 && selectedRating < 6)
         {
-        Reviews review = new Reviews();
-        review.UserID =(int)FilmsAndData.currentUserID;
-        review.FilmID = FilmsAndData.Film.FilmID;
-        review.Rank = selectedRating;
-        _context.Reviews.Add(review);
-        await _context.SaveChangesAsync();
-        }
+            Reviews review = new Reviews();
+            review.UserID = (int)FilmsAndData.currentUserID;
+            review.FilmID = FilmsAndData.Film.FilmID;
+            review.Rank = selectedRating;
+            FilmsAndData.Rank = selectedRating;
+            if (FilmsAndData.ReviewID != null)
+            {
+                review.ReviewID = (int)FilmsAndData.ReviewID;
+                _context.Reviews.Update(review);
+            }
+            else
+                _context.Reviews.Add(review);
+            await _context.SaveChangesAsync();
+            }
     }
 }
