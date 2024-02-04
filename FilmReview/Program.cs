@@ -1,3 +1,6 @@
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
 using FilmReview.Data;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +12,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
+builder.Services.AddBlazorise(options =>{options.Immediate = true;}).AddBootstrapProviders().AddFontAwesomeIcons();
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 //DbInitializer.AddMySqlContext<MyContext>(builder.Services, connectionString);
 DbInitializer.AddSqlServerContext<MyContext>(builder.Services, connectionString);

@@ -22,6 +22,14 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcG9uZW50c1xSYXRpbmcucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/GitHub/FilmReview/FilmReview/Views/Components/SearchFilms.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcG9uZW50c1xTZWFyY2hGaWxtcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/FilmReview/FilmReview/Views/Components/SearchFilmsDemo.razor]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcG9uZW50c1xTZWFyY2hGaWxtc0RlbW8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/GitHub/FilmReview/FilmReview/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 

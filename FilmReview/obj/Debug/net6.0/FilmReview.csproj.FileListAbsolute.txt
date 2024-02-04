@@ -797,3 +797,14 @@ D:\GitHub\FilmReview\FilmReview\bin\Debug\net6.0\runtimes\win-arm\native\e_sqlit
 D:\GitHub\FilmReview\FilmReview\bin\Debug\net6.0\runtimes\win-arm64\native\e_sqlite3.dll
 D:\GitHub\FilmReview\FilmReview\bin\Debug\net6.0\runtimes\win-x64\native\e_sqlite3.dll
 D:\GitHub\FilmReview\FilmReview\bin\Debug\net6.0\runtimes\win-x86\native\e_sqlite3.dll
+D:\GitHub\FilmReview\FilmReview\bin\Debug\net6.0\Blazorise.dll
+D:\GitHub\FilmReview\FilmReview\bin\Debug\net6.0\Blazorise.Bootstrap.dll
+D:\GitHub\FilmReview\FilmReview\bin\Debug\net6.0\Blazorise.Components.dll
+D:\GitHub\FilmReview\FilmReview\bin\Debug\net6.0\Blazorise.Icons.FontAwesome.dll
+D:\GitHub\FilmReview\FilmReview\bin\Debug\net6.0\Blazorise.Licensing.dll
+D:\GitHub\FilmReview\FilmReview\bin\Debug\net6.0\Blazorise.Snackbar.dll
+D:\GitHub\FilmReview\FilmReview\bin\Debug\net6.0\DeepCloner.dll
+D:\GitHub\FilmReview\FilmReview\bin\Debug\net6.0\Microsoft.AspNetCore.Components.Forms.dll
+D:\GitHub\FilmReview\FilmReview\bin\Debug\net6.0\Microsoft.AspNetCore.Components.Web.dll
+D:\GitHub\FilmReview\FilmReview\bin\Debug\net6.0\Microsoft.JSInterop.dll
+D:\GitHub\FilmReview\FilmReview\bin\Debug\net6.0\System.IO.Pipelines.dll

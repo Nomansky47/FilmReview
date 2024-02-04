@@ -1,0 +1,68 @@
+﻿@using FilmReview.Data
+@using FilmReview.Models
+@using Microsoft.AspNetCore.Mvc
+@using NomaniusMVC
+@inject NavigationManager NavigationManager
+@inject IHttpContextAccessor accesor
+@inject MyContext _context
+<h3>SearchFilms</h3>
+
+<Dropdown>
+    <DropdownToggle Color="Color.Primary">
+        Выберите тэги для поиска
+    </DropdownToggle>
+    <DropdownMenu>
+        <DropdownItem ShowCheckbox>драма</DropdownItem>
+        <DropdownDivider />
+        <DropdownItem ShowCheckbox>фэнтези</DropdownItem>
+        <DropdownItem ShowCheckbox Disabled>хоррор :)</DropdownItem>
+    </DropdownMenu>
+</Dropdown>
+<br />
+<div class="container">
+    @for (var i = 0; i < Films.Count; i += 4)
+    {
+        <div class="row">
+            @for (var j = i; j < i + 4 && j < Films.Count; j++)
+            {
+                <div class="card col" style="margin-bottom: 10px; margin-right: 10px;">
+                    <img src="@Films[j].FilmImageLink" alt="@error" width="170" height="250" />
+                    <div class="card-body">
+                        @{
+                            float Rating = 0;
+                            if (Films[j].Total != 0)
+                                Rating = (float)Films[j].Summ / (float)Films[j].Total;
+                        }
+                        <h5>@Films[j].FilmName @Rating</h5>
+                        <p>@Films[j].FilmTags</p>
+                        
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public List<Films> Films{ get; set; }
+    public string error = "https://img.freepik.com/free-vector/glitch-error-404-page-background_23-2148072411.jpg?size=626&ext=jpg";
+    public async Task FilmDetails(int id)
+    {
+        var films =  _context.Films.ToList();
+        var list = _context.Reviews.ToList();
+        FilmsAndData FilmsAndData = new FilmsAndData();
+        FilmsAndData.Film = films.FirstOrDefault(f => f.FilmID == id);
+        FilmsAndData.isAdmin = DataSessions.isAdmin(accesor.HttpContext);
+        if (accesor.HttpContext.GetSession("userid") != null)
+            FilmsAndData.currentUserID = int.Parse(accesor.HttpContext.GetSession("userid"));
+        var review = list.FirstOrDefault(p => p.FilmID == FilmsAndData.Film.FilmID && p.UserID == FilmsAndData.currentUserID);
+        if (review != null)
+        {
+            FilmsAndData.Rank = review.Rank;
+            FilmsAndData.ReviewID = review.ReviewID;
+        }
+        NavigationManager.NavigateTo("", false);
+    }
+    
+}

@@ -5,12 +5,4 @@
     string error="https://img.freepik.com/free-vector/glitch-error-404-page-background_23-2148072411.jpg?size=626&ext=jpg";
     //width ширина height высота
 }
-@if(Model.isAdmin!=null)
-{
-    <h5>Вы авторизованы</h5>
-    @(await BlazorPage.Render<FilmReview.Views.Components.Rating>(Html,new {FilmsAndData=Model}))
-}
-else
-{
-    <h5>Вы не авторизованы</h5>
-}
+@(await BlazorPage.Render<FilmReview.Views.Components.Rating>(Html,new {FilmsAndData=Model}))
