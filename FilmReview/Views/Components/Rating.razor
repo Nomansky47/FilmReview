@@ -1,6 +1,7 @@
 ﻿@using FilmReview.Models
 @using FilmReview.Data
 @using Microsoft.EntityFrameworkCore
+@inject MyContext _context
 <img src="@FilmsAndData.Film.FilmImageLink" />
 @{
     float result =(float)FilmsAndData.Film.Summ / (float)FilmsAndData.Film.Total;
@@ -11,16 +12,18 @@
 <h5>Длительность: @FilmsAndData.Film.Duration | MPAA: @FilmsAndData.Film.MPAA </h5>
 @if (FilmsAndData.isAdmin != null)
 {
-    <Blazorise.Rating Color="Color.Primary" @bind-SelectedValue="@FilmsAndData.Rank" MaxValue="5" />
-<button @onclick="RateFilm">Rate</button>
+    <Blazorise.Rating  Color="Color.Success" @bind-SelectedValue="@FilmsAndData.Rank" MaxValue="5" @onclick="RateFilm" />
 }
 
 @code {
-    public int[] array = new int[5];
     [Parameter]
     public FilmsAndData FilmsAndData { get; set; }
-    [Inject]
-    private MyContext _context{ get; set; }
+    int oldRank = 0;
+    protected override async Task OnInitializedAsync()
+    {
+        oldRank = FilmsAndData.Rank;
+    }
+    public int[] array = new int[5];
     private async Task RateFilm()
     {
         if (FilmsAndData.Rank > 0 && FilmsAndData.Rank < 6)
@@ -29,13 +32,21 @@
             review.UserID = (int)FilmsAndData.currentUserID;
             review.FilmID = FilmsAndData.Film.FilmID;
             review.Rank =(int)FilmsAndData.Rank;
+            Films film = FilmsAndData.Film;
             if (FilmsAndData.ReviewID != null)
             {
                 review.ReviewID = (int)FilmsAndData.ReviewID;
+                film.Summ -= oldRank;
+                film.Summ += review.Rank;
                 _context.Reviews.Update(review);
             }
             else
+            {
+                film.Total += 1;
+                film.Summ += review.Rank;
                 _context.Reviews.Add(review);
+            }
+            _context.Films.Update(film);
             await _context.SaveChangesAsync();
             }
     }
