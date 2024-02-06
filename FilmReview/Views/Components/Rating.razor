@@ -21,33 +21,40 @@
     int oldRank = 0;
     protected override async Task OnInitializedAsync()
     {
-        oldRank = FilmsAndData.Rank;
+        if (FilmsAndData.Rank != 0)
+        {
+            oldRank = FilmsAndData.Rank;
+            pressed = true;
+        }
+        else pressed = false;
+
     }
     public int[] array = new int[5];
+    public bool pressed { get; set; }
     private async Task RateFilm()
     {
         if (FilmsAndData.Rank > 0 && FilmsAndData.Rank < 6)
         {
-            Reviews review = new Reviews();
+            Reviews review = _context.Reviews.FirstOrDefault(p => p.ReviewID == FilmsAndData.ReviewID);
             review.UserID = (int)FilmsAndData.currentUserID;
-            review.FilmID = FilmsAndData.Film.FilmID;
             review.Rank =(int)FilmsAndData.Rank;
-            Films film = FilmsAndData.Film;
-            if (FilmsAndData.ReviewID != null)
+            Films film =_context.Films.FirstOrDefault(p=>p.FilmID==FilmsAndData.Film.FilmID);
+            review.FilmID = FilmsAndData.Film.FilmID;
+            if (FilmsAndData.ReviewID!= null&&pressed==true)
             {
-                review.ReviewID = (int)FilmsAndData.ReviewID;
                 film.Summ -= oldRank;
                 film.Summ += review.Rank;
-                _context.Reviews.Update(review);
             }
             else
             {
                 film.Total += 1;
                 film.Summ += review.Rank;
+                pressed = true;
                 _context.Reviews.Add(review);
             }
-            _context.Films.Update(film);
+            oldRank = FilmsAndData.Rank;
+            FilmsAndData.Film = film;
             await _context.SaveChangesAsync();
-            }
+        }
     }
 }

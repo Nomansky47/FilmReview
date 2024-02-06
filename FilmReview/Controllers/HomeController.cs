@@ -29,7 +29,7 @@ namespace FilmReview.Controllers
             var list = await _context.Reviews.ToListAsync();
             FilmsAndData FilmsAndData = new FilmsAndData();
             FilmsAndData.Film = films.FirstOrDefault(f => f.FilmID == id);
-            FilmsAndData.isAdmin = DataSessions.isAdmin(HttpContext);
+            FilmsAndData.isAdmin = HttpContext.isAdmin();
             if (HttpContext.GetSession("userid")!=null)
             FilmsAndData.currentUserID = int.Parse(HttpContext.GetSession("userid"));
             var review = list.FirstOrDefault(p => p.FilmID == FilmsAndData.Film.FilmID && p.UserID == FilmsAndData.currentUserID);
