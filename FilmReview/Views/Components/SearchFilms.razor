@@ -8,42 +8,87 @@
         Выберите тэги для поиска
     </DropdownToggle>
     <DropdownMenu>
-        <DropdownItem ShowCheckbox>драма</DropdownItem>
-        <DropdownDivider />
-        <DropdownItem ShowCheckbox>фэнтези</DropdownItem>
-        <DropdownItem ShowCheckbox Disabled>хоррор :)</DropdownItem>
+        @foreach(var genre in Genres)
+        {
+            <DropdownItem ShowCheckbox CheckedChanged="@(()=>SaveItem(genre))">@genre</DropdownItem>
+        }
     </DropdownMenu>
 </Dropdown>
+<Button Clicked="@ChooseItem">Искать</Button>
 <br />
+@foreach (var genre in SelectedGenres) { str += genre + " "; }
+<h4>@str</h4>
 <div class="container">
-    @for (var i = 0; i < Films.Count; i += 4)
+    @if (Films.FirstOrDefault()==null)
+    {
+        <Text>Таких фильмов нет</text>
+    }
+    else
+    {
+    for (var i = 0; i < Films.Count; i += 4)
     {
         <div class="row">
             @for (var j = i; j < i + 4 && j < Films.Count; j++)
             {
+                float Rating = 0;
+                if (Films[j].Total != 0)
+                    Rating = (float)Films[j].Summ / (float)Films[j].Total;
                 <div class="card col" style="margin-bottom: 10px; margin-right: 10px;">
                     <img src="@Films[j].FilmImageLink" alt="@error" width="170" height="250" />
                     <div class="card-body">
-                        @{
-                            float Rating = 0;
-                            if (Films[j].Total != 0)
-                                Rating = (float)Films[j].Summ / (float)Films[j].Total;
-                        }
-                        <h5>@Films[j].FilmName @Rating</h5>
-                        <p>@Films[j].FilmTags</p>
-                        <a class="btn btn-success" href="Home/FilmDetails/@Films[j].FilmID">Подробнее</a>
+                     <h5>@Films[j].FilmName @Rating</h5>
+                            <p>@Films[j].Tags</p>
+                     <a class="btn btn-success" href="Home/FilmDetails/@Films[j].FilmID">Подробнее</a>
                     </div>
                 </div>
             }
         </div>
     }
+    }
 </div>
 
 @code {
+    string str = "";
     public string error = "Картинка фильма";
     public List<Films> Films{ get; set; }
+    public IEnumerable<string> Genres{ get; set; }
+    public List<string> SelectedGenres { get; set; }
     protected override async Task OnInitializedAsync()
     {
         Films = _context.Films.ToList();
+        SelectedGenres = new List<string>();
+        Genres = new HashSet<string>
+        {
+            "драма",
+            "фентези",
+            "боевик",
+            "хоррор"
+        };
+    }
+    public async Task SaveItem(string genre)
+    {
+        str = "";
+        if (!SelectedGenres.Contains(genre))
+            SelectedGenres.Add(genre);
+        else SelectedGenres.Remove(genre);
+    }
+    public async Task ChooseItem()
+    {
+        var AllFilms = _context.Films.ToList();
+        if (SelectedGenres.FirstOrDefault() != null)
+        {
+            var TempFilms = new HashSet<Films>();
+            foreach (var tag in SelectedGenres)
+            {
+                foreach (var film in AllFilms.Where(p => p.Tags.Contains(tag)).ToList())
+                {
+                    TempFilms.Add(film);
+                }
+
+            }
+            Films = TempFilms.ToList();
+
+        }
+        else Films = AllFilms;
     }
 }

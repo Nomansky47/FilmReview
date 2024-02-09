@@ -12,7 +12,7 @@ namespace FilmReview.Models
         [Required]
         public string FilmName { get; set; }
         [Required]
-        public string FilmTags { get; set; }
+        public string Tags { get; set; }
         [Required]
         public string Country { get; set; }
         [Required]
