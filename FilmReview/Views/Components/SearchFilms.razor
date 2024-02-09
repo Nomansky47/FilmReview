@@ -4,7 +4,7 @@
 @using NomaniusMVC
 @inject MyContext _context
 <Dropdown>
-    <DropdownToggle Color="Color.Primary">
+    <DropdownToggle Color="Color.Success">
         Выберите тэги для поиска
     </DropdownToggle>
     <DropdownMenu>
@@ -31,7 +31,7 @@
                         }
                         <h5>@Films[j].FilmName @Rating</h5>
                         <p>@Films[j].FilmTags</p>
-                        <a class="btn btn-primary" href="Home/FilmDetails/@Films[j].FilmID">Подробнее</a>
+                        <a class="btn btn-success" href="Home/FilmDetails/@Films[j].FilmID">Подробнее</a>
                     </div>
                 </div>
             }

@@ -3,17 +3,17 @@
 @using Microsoft.EntityFrameworkCore
 @inject MyContext _context
 <img src="@FilmsAndData.Film.FilmImageLink" />
-@{
-    float result =(float)FilmsAndData.Film.Summ / (float)FilmsAndData.Film.Total;
+<h1>@((float)FilmsAndData.Film.Summ / (float)FilmsAndData.Film.Total) </h1>
+@if (FilmsAndData.isAdmin != null)
+{
+    <Div class="display-6">
+        <Blazorise.Rating  TextColor="TextColor.Success" @bind-SelectedValue="@FilmsAndData.Rank" MaxValue="5" @onclick="RateFilm" />
+    </Div>
 }
-<h1>@result </h1>
 <h4>О фильме: @FilmsAndData.Film.About</h4>
 <h5>Страна: @FilmsAndData.Film.Country | Год: @FilmsAndData.Film.Year </h5>
 <h5>Длительность: @FilmsAndData.Film.Duration | MPAA: @FilmsAndData.Film.MPAA </h5>
-@if (FilmsAndData.isAdmin != null)
-{
-    <Blazorise.Rating  Color="Color.Success" @bind-SelectedValue="@FilmsAndData.Rank" MaxValue="5" @onclick="RateFilm" />
-}
+
 
 @code {
     [Parameter]
