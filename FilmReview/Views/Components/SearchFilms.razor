@@ -14,10 +14,11 @@
         }
     </DropdownMenu>
 </Dropdown>
-<Button Clicked="@ChooseItem">Искать</Button>
 <br />
-@foreach (var genre in SelectedGenres) { str += genre + " "; }
-<h4>@str</h4>
+<Button Color="Color.Success" Clicked="@ChooseItem">Искать</Button>
+<br />
+@foreach (var genre in SelectedGenres) { ShowGenres += genre + " "; }
+<h4>@ShowGenres</h4>
 <div class="container">
     @if (Films.FirstOrDefault()==null)
     {
@@ -48,7 +49,7 @@
 </div>
 
 @code {
-    string str = "";
+    string ShowGenres = "";
     public string error = "Картинка фильма";
     public List<Films> Films{ get; set; }
     public IEnumerable<string> Genres{ get; set; }
@@ -60,20 +61,25 @@
         Genres = new HashSet<string>
         {
             "драма",
-            "фентези",
             "боевик",
-            "хоррор"
+            "комедия",
+            "триллер",
+            "исторический",
+            "фантастика",
+            "биография",
+            "мелодрама"
         };
     }
     public async Task SaveItem(string genre)
     {
-        str = "";
+        ShowGenres = "";
         if (!SelectedGenres.Contains(genre))
             SelectedGenres.Add(genre);
         else SelectedGenres.Remove(genre);
     }
     public async Task ChooseItem()
     {
+        ShowGenres = "";
         var AllFilms = _context.Films.ToList();
         if (SelectedGenres.FirstOrDefault() != null)
         {

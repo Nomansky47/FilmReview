@@ -11,14 +11,103 @@
     </Div>
 }
 <h4>О фильме: @FilmsAndData.Film.About</h4>
+<h5>Тэги: @FilmsAndData.Film.Tags</h5>
 <h5>Страна: @FilmsAndData.Film.Country | Год: @FilmsAndData.Film.Year </h5>
 <h5>Длительность: @FilmsAndData.Film.Duration | MPAA: @FilmsAndData.Film.MPAA </h5>
-
-
+@if (FilmsAndData.isAdmin != null)
+{
+    <Form>
+         <FieldBody ColumnSize="ColumnSize.Is10">
+             <TextEdit @bind-Text="TextComment" Placeholder="Комментарий..." />
+         </FieldBody>
+         <Button Color="Color.Primary" Clicked="Comment" Type="ButtonType.Submit" PreventDefaultOnSubmit>Отправить</Button>
+ </Form>
+    <br />
+}
+@if(Comments.FirstOrDefault()!=null)
+{
+    foreach (var comment in Comments)
+    {
+        @if (comment.SubCommentID == null&&!SubCommentsID.Contains(comment.CommentID))
+        {
+            <Card Background
+            ="Background.Light" Style
+            ="width:600px">
+                <CardTitle Size="3">
+                @Users.FirstOrDefault(p=>p.UserID==comment.UserID).NickName
+            </CardTitle>
+            <CardText>@comment.Text</CardText>
+                    @if (FilmsAndData.isAdmin != null)
+                {
+                    <CardText>Likes: @comment.Likes | Dislikes: @comment.Dislikes</CardText>
+                    <Div TextAlignment="TextAlignment.End" Padding="Padding.Is1.FromEnd">
+                        <Button Color="Color.Success" Clicked="@(()=>CommentEnable(comment.CommentID))" >
+                        Ответить
+                        <Icon Name="IconName.ArrowDown"></Icon>
+                </Button>
+                </Div>
+                }
+            </Card>
+            }
+        @if (CommentingOn == comment.UserID)
+        {
+            <Form>
+                <FieldBody ColumnSize="ColumnSize.Is10">
+                    <TextEdit @bind-Text="TextSubComment" Placeholder="Комментарий к комментарию..." />
+                </FieldBody>
+                <Button Color="Color.Primary" Clicked="CommentOnComment" Type="ButtonType.Submit" PreventDefaultOnSubmit>Отправить</Button>
+         </Form>
+        }
+            @if (comment.SubCommentID!=null)
+        {
+            <Card Background="Background.Light" Style="width:600px">
+                <CardTitle Size="3">
+                    @Users.FirstOrDefault(p => p.UserID == comment.UserID).NickName
+                </CardTitle>
+                <CardText>@comment.Text</CardText>
+                    @if (FilmsAndData.isAdmin != null)
+                {
+                    <CardText>Likes: @comment.Likes | Dislikes: @comment.Dislikes</CardText>
+                    <Div TextAlignment="TextAlignment.End" Padding="Padding.Is1.FromEnd">
+                        <Button Color="Color.Success" Clicked="@(()=>CommentEnable(comment.CommentID))">
+                            Ответить
+                            <Icon Name="IconName.ArrowDown"></Icon>
+                        </Button>
+                    </Div>
+                }
+            </Card>
+            var SubComments=Comments.Where(p => p.CommentID == comment.SubCommentID).ToList();
+            foreach(var subcomment in SubComments)
+            {
+                <Div Padding="Padding.Is5.FromStart">
+                <Card Background="Background.Light" Style="width:600px">
+                    <CardTitle Size="3">
+                        @Users.FirstOrDefault(p => p.UserID == subcomment.UserID).NickName
+                    </CardTitle>
+                    <CardText>Это сабкоммент</CardText>
+                    <CardText>@subcomment.Text</CardText>
+                        <Div TextAlignment="TextAlignment.End" Padding="Padding.Is1.FromEnd">
+                        </Div>
+                    </Card>
+                    </Div>
+            }
+        }
+        <br />
+    }
+}
 @code {
+    //TODO: Обратная техника
     [Parameter]
     public FilmsAndData FilmsAndData { get; set; }
+    public List<Comments> Comments { get; set; }
+   // public List<Comments> SubComments { get; set; } <-- Ответ
+    public IEnumerable<Users> Users { get; set; }
     int oldRank = 0;
+    public bool pressed { get; set; }
+    public string TextComment { get; set; } = "";
+    public string TextSubComment { get; set; } = "";
+    public int? CommentingOn { get; set; }
+    public List<int> SubCommentsID { get; set; } = new List<int>();
     protected override async Task OnInitializedAsync()
     {
         if (FilmsAndData.Rank != 0)
@@ -27,10 +116,17 @@
             pressed = true;
         }
         else pressed = false;
-
+        Comments = _context.Comments.Where(p => p.FilmID == FilmsAndData.Film.FilmID).ToList();
+        Users = _context.Users.ToList();
+        foreach (var comment in Comments)
+        {
+            if (comment.SubCommentID != null)
+            {
+                int number = (int)comment.SubCommentID;
+                SubCommentsID.Add(number);
+            }
+        }
     }
-    public int[] array = new int[5];
-    public bool pressed { get; set; }
     private async Task RateFilm()
     {
         if (FilmsAndData.Rank > 0 && FilmsAndData.Rank < 6)
@@ -54,6 +150,47 @@
             }
             oldRank = FilmsAndData.Rank;
             FilmsAndData.Film = film;
+            await _context.SaveChangesAsync();
+        }
+    }
+    private async Task Comment()
+    {
+        if (TextComment != "")
+        {
+            Comments Comment = new Comments();
+            Comment.Text = TextComment;
+            Comment.Row = 0;
+            Comment.Likes = 0;
+            Comment.Dislikes = 0;
+            Comment.FilmID=FilmsAndData.Film.FilmID;
+            Comment.UserID =(int)FilmsAndData.currentUserID;
+            TextComment = "";
+            Comments.Add(Comment);
+            _context.Comments.Add(Comment);
+            await _context.SaveChangesAsync();
+        }
+    }
+    private async Task CommentEnable(int CommentID)
+    {
+        CommentingOn = CommentID;
+    }
+    private async Task CommentOnComment()
+    {
+        if (TextSubComment != "")
+        {
+            Comments Comment = new Comments();
+            Comment.Text = TextSubComment;
+            Comment.Row = 1;
+            Comment.Likes = 0;
+            Comment.Dislikes = 0;
+            Comment.FilmID = FilmsAndData.Film.FilmID;
+            Comment.UserID = (int)FilmsAndData.currentUserID;
+            TextSubComment = "";
+            _context.Comments.Add(Comment);
+            await _context.SaveChangesAsync();
+            Comments.Add(Comment);
+            var ChangedComment = Comments.FirstOrDefault(p => p.CommentID == CommentingOn); 
+            ChangedComment.SubCommentID = _context.Comments.Last().CommentID;
             await _context.SaveChangesAsync();
         }
     }

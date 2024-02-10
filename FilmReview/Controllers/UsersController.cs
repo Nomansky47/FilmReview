@@ -56,7 +56,7 @@ namespace FilmReview.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,UserLogin,Password,isAdmin,Surname,Name,Patronymic")] Users users)
+        public async Task<IActionResult> Create([Bind("UserID,NickName,UserLogin,Password,isAdmin,Surname,Name,Patronymic")] Users users)
         {
                 _context.Add(users);
                 await _context.SaveChangesAsync();
@@ -84,7 +84,7 @@ namespace FilmReview.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,UserLogin,Password,isAdmin,Surname,Name,Patronymic")] Users users)
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,NickName,UserLogin,Password,isAdmin,Surname,Name,Patronymic")] Users users)
         {
             if (id != users.UserID)
             {

@@ -16,12 +16,12 @@ namespace FilmReview.Controllers
         }
         public IActionResult AuthorizationPage()
         {
-            ViewData["Authorization"] = "Welcome to Authorization Page";
+            ViewData["Authorization"] = "Добро пожаловать на страницу авторизации";
             return View();
         }
         public IActionResult RegistrationPage()
         {
-            ViewData["Registration"] = "Welcome to Authorization Page";
+            ViewData["Registration"] = "Добро пожаловать на страницу регистрации";
             return View();
         }
 
@@ -29,7 +29,7 @@ namespace FilmReview.Controllers
         {
             if (_context.Users.FirstOrDefault(p => p.UserLogin == user.UserLogin) == null)
             {
-                ViewData["Registration"] = "Welcome to Authorization Page";
+                ViewData["Registration"] = "Добро пожаловать на страницу регистрации";
                 user.isAdmin = false;
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
@@ -52,7 +52,7 @@ namespace FilmReview.Controllers
             }
             else
             {
-                ViewData["Authorization"] = "User not found, wrong login or password";
+                ViewData["Authorization"] = "Пользователь не найден, попробуйте использовать другой логин или пароль";
                 return View("AuthorizationPage");
             }
         }

@@ -7,6 +7,8 @@ namespace FilmReview.Models
         [Key]
         public int UserID { get; set; }
         [Required]
+        public string NickName { get; set; }
+        [Required]
         public string UserLogin { get; set; }
         [Required]
         public string Password { get; set; }
