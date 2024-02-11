@@ -106,7 +106,7 @@
         {
             if (comment.TrackingOn != null)
             {
-               //
+            //
             }
         }
     }
@@ -115,11 +115,12 @@
         if (FilmsAndData.Rank > 0 && FilmsAndData.Rank < 6)
         {
             Reviews review = _context.Reviews.FirstOrDefault(p => p.ReviewID == FilmsAndData.ReviewID);
+            if (review == null) review = new Reviews();
             review.UserID = (int)FilmsAndData.currentUserID;
             review.Rank =(int)FilmsAndData.Rank;
             Films film =_context.Films.FirstOrDefault(p=>p.FilmID==FilmsAndData.Film.FilmID);
             review.FilmID = FilmsAndData.Film.FilmID;
-            if (FilmsAndData.ReviewID!= null&&pressed==true)
+            if (FilmsAndData.ReviewID!= null||pressed==true)
             {
                 film.Summ -= oldRank;
                 film.Summ += review.Rank;
