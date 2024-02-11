@@ -59,7 +59,7 @@ namespace FilmReview.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CommentID,UserID,FilmID,Row,Text,Likes,Dislikes,SubCommentID")] Comments comments)
+        public async Task<IActionResult> Create([Bind("CommentID,UserID,FilmID,Row,Text,Likes,Dislikes,TrackingOn")] Comments comments)
         {
                 _context.Add(comments);
                 await _context.SaveChangesAsync();
@@ -89,7 +89,7 @@ namespace FilmReview.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CommentID,UserID,FilmID,Row,Text,Likes,Dislikes,SubCommentID")] Comments comments)
+        public async Task<IActionResult> Edit(int id, [Bind("CommentID,UserID,FilmID,Row,Text,Likes,Dislikes,TrackingOn")] Comments comments)
         {
             if (id != comments.CommentID)
             {

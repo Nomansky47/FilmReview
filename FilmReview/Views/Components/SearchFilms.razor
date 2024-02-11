@@ -10,12 +10,10 @@
     <DropdownMenu>
         @foreach(var genre in Genres)
         {
-            <DropdownItem ShowCheckbox CheckedChanged="@(()=>SaveItem(genre))">@genre</DropdownItem>
+            <DropdownItem ShowCheckbox CheckedChanged="@(()=>ChooseItem(genre))">@genre</DropdownItem>
         }
     </DropdownMenu>
 </Dropdown>
-<br />
-<Button Color="Color.Success" Clicked="@ChooseItem">Искать</Button>
 <br />
 @foreach (var genre in SelectedGenres) { ShowGenres += genre + " "; }
 <h4>@ShowGenres</h4>
@@ -70,16 +68,12 @@
             "мелодрама"
         };
     }
-    public async Task SaveItem(string genre)
+    public async Task ChooseItem(string genre)
     {
         ShowGenres = "";
         if (!SelectedGenres.Contains(genre))
             SelectedGenres.Add(genre);
         else SelectedGenres.Remove(genre);
-    }
-    public async Task ChooseItem()
-    {
-        ShowGenres = "";
         var AllFilms = _context.Films.ToList();
         if (SelectedGenres.FirstOrDefault() != null)
         {

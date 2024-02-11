@@ -25,6 +25,6 @@ namespace FilmReview.Models
         [ForeignKey("FilmID")]
         public virtual Films Films { get; set; }
         [AllowNull]
-        public int? SubCommentID { get; set; }
+        public int? TrackingOn { get; set; }
     }
 }

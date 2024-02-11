@@ -34,7 +34,7 @@
                 @Html.DisplayNameFor(model => model.Dislikes)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SubCommentID)
+                @Html.DisplayNameFor(model => model.TrackingOn)
             </th>
             <th></th>
         </tr>
@@ -64,7 +64,7 @@
                 @Html.DisplayFor(modelItem => item.Dislikes)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SubCommentID)
+                    @Html.DisplayFor(modelItem => item.TrackingOn)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CommentID">Edit</a> |
