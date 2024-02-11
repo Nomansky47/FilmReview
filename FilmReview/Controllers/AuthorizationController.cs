@@ -25,7 +25,7 @@ namespace FilmReview.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Register([Bind("UserID,UserLogin,Password,isAdmin,Surname,Name,Patronymic")] Users user)
+        public async Task<IActionResult> Register([Bind("UserID,NickName,UserLogin,Password,isAdmin,Surname,Name,Patronymic")] Users user)
         {
             if (_context.Users.FirstOrDefault(p => p.UserLogin == user.UserLogin) == null)
             {
