@@ -60,6 +60,10 @@
               "target": "Package",
               "version": "[1.4.2, )"
             },
+            "Blazorise.Snackbar": {
+              "target": "Package",
+              "version": "[1.4.2, )"
+            },
             "Microsoft.AspNetCore.Components": {
               "target": "Package",
               "version": "[6.0.26, )"

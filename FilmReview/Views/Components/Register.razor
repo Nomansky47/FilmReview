@@ -39,13 +39,17 @@
             </Field>
         </ModalBody>
         <ModalFooter>
-            <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
-            <Button Color="Color.Primary" Clicked="@SaveModal">Save Changes</Button>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Назад</Button>
+            <Button Color="Color.Primary" Clicked="@SaveModal">Зарегестрироваться</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>
-
-<Snackbar @ref="SnackBarError" Color="SnackbarColor.Light">
+<Snackbar TextSize="TextSize.Small" @ref="SnackBarNormal" Color="SnackbarColor.Light">
+    <SnackbarBody>
+        <Text TextColor="TextColor.Success">@Message</Text>
+        </SnackbarBody>
+    </Snackbar>
+<Snackbar TextSize="TextSize.Small" @ref="SnackBarError" Color="SnackbarColor.Light">
     <SnackbarBody>
         <Text TextColor="TextColor.Danger">@Message</Text>
     </SnackbarBody>
@@ -61,6 +65,7 @@
     private string? Patronymic { get; set; }
     private string Message { get; set; } = "";
     private Snackbar SnackBarError;
+    private Snackbar SnackBarNormal;
     private Task ShowModal()
     {
         return ModalRef.Show();
@@ -79,23 +84,33 @@
     }
     private async Task SaveModal()
     {
-        var user = _context.Users.FirstOrDefault(p => p.UserLogin == Login);
-        if (Password == Password2)
+        if (NickName != "" && Patronymic != "" && Password2 != "" && Surname !="" &&Name != "" && Password != "" && Login != "")
         {
-            if (user == null)
+            var user = _context.Users.FirstOrDefault(p => p.UserLogin == Login);
+            if (Password == Password2)
             {
-                if (Patronymic == "") Patronymic = null;
-                _navigationManager.NavigateTo("Register/" + NickName + "/" + Login + "/" + Password + "/" + Surname + "/" + Name + "/" + Patronymic, true);
-            }
+                if (user == null)
+                {
+                    if (Patronymic == "") Patronymic = null;
+                    ModalRef.Hide();
+                    _navigationManager.NavigateTo("Register/" + NickName + "/" + Login + "/" + Password + "/" + Surname + "/" + Name + "/" + Patronymic, false);
+                    Message = "Успешная регистрация";
+                    SnackBarNormal.Show();
+                }
+                else
+                {
+                    Message = "Пользователь с таким логином уже существует!";
+                    SnackBarError.Show();
+                }
+            } 
             else
             {
-                Message = "Пользователь с таким логином уже существует";
+                Message = "Введенные пароли не совпадают!";
                 SnackBarError.Show();
-                await ModalRef.Hide();
             }
         } else
         {
-            Message = "Введенные пароли не совпадают";
+            Message = "Не все данные были введены!";
             SnackBarError.Show();
         }
     }

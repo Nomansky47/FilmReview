@@ -15,16 +15,6 @@ namespace FilmReview.Controllers
         {
             _context = context;
         }
-        public IActionResult AuthorizationPage()
-        {
-            ViewData["Authorization"] = "Добро пожаловать на страницу авторизации";
-            return View();
-        }
-        public IActionResult RegistrationPage()
-        {
-            ViewData["Registration"] = "Добро пожаловать на страницу регистрации";
-            return View();
-        }
         [Route("Register/{NickName}/{UserLogin}/{Password}/{Surname}/{Name}/{Patronymic?}")]
         public async Task<IActionResult> Register(string NickName,string UserLogin,string Password,string Surname,string Name,string? Patronymic)
         {
@@ -45,7 +35,7 @@ namespace FilmReview.Controllers
             return View("HomePage","Not");
         }
         [Route("Auth/{userid}/{isAdmin}")]
-          public async  Task<IActionResult> Auth(string userid,bool isAdmin)
+          public IActionResult Auth(string userid,bool isAdmin)
           {
                   HttpContext.AddSession("userid", userid);
                   if (isAdmin == true)

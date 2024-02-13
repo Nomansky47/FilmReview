@@ -1,0 +1,71 @@
+﻿@using FilmReview.Data
+@inject MyContext _context
+@inject NavigationManager _navigationManager
+<Button @onclick="ShowModal">Авторизация</Button>
+<Modal @ref="ModalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Авторизация</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Логин</FieldLabel>
+                <TextEdit @bind-Text="Login" Placeholder="Введите логин..." />
+            </Field>
+            <Field>
+                <FieldLabel>Пароль</FieldLabel>
+                <TextEdit @bind-Text="Password" Placeholder="Введите пароль..." />
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Назад</Button>
+            <Button Color="Color.Primary" Clicked="@SaveModal">Войти</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+<Snackbar TextSize="TextSize.Small" @ref="SnackBarNormal" Color="SnackbarColor.Light">
+    <SnackbarBody>
+        <Text TextColor="TextColor.Success">@Message</Text>
+        </SnackbarBody>
+    </Snackbar>
+<Snackbar TextSize="TextSize.Small"  @ref="SnackBarError" Color="SnackbarColor.Light">
+    <SnackbarBody>
+        <Text TextColor="TextColor.Danger">@Message</Text>
+    </SnackbarBody>
+</Snackbar>
+    @code {
+    private Modal ModalRef;
+    private string Login { get; set; } = "";
+    private string Password { get; set; } = "";
+    private Snackbar SnackBarError;
+    private Snackbar SnackBarNormal;
+    private string Message = "";
+    private Task ShowModal()
+    {
+        return ModalRef.Show();
+    }
+
+    private async Task HideModal()
+    {
+        Password = "";
+        Login = "";
+        await ModalRef.Hide();
+    }
+    private async Task SaveModal()
+    {
+        var user = _context.Users.FirstOrDefault(p => p.UserLogin == Login && p.Password == Password);
+        if (user != null)
+        {
+            ModalRef.Hide();
+            _navigationManager.NavigateTo("Auth/" + user.UserID + "/" + user.isAdmin, true);
+            Message = "Успешная авторизация!";
+            await SnackBarNormal.Show();
+        }
+        else
+        {
+            Message="Неправильно введенный логин или пароль!";
+            SnackBarError.Show();
+        }
+    }
+}

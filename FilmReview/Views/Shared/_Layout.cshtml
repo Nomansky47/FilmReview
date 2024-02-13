@@ -1,6 +1,5 @@
 ﻿@inject IHttpContextAccessor HttpContextAccessor;
-@using NomaniusMVC  
-@using FilmReview.Views.Components
+@using NomaniusMVC
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,15 +27,15 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="HomePage">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="HomePage">Главная страница</a>
                         </li>
                         @if (HttpContextAccessor.HttpContext.isAdmin()==null)
                         {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Authorization" asp-action="AuthorizationPage">Authorization</a>
-                        </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Authorization" asp-action="RegistrationPage">Registration</a>
+                                @(await BlazorPage.Render<FilmReview.Views.Components.Auth>(Html))
+                            </li>
+                            <li class="nav-item">
+                                @(await BlazorPage.Render<FilmReview.Views.Components.Register>(Html))
                             </li>
                         }
                          @if (HttpContextAccessor.HttpContext.isAdmin()==true)
@@ -63,12 +62,6 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Authorization" asp-action="Exit">Exit</a>
                             </li>
                         }
-                        <li class="nav-item">
-                         @(await BlazorPage.Render<FilmReview.Views.Components.NewTest>(Html))
-                        </li>
-                        <li class="nav-item">
-                            @(await BlazorPage.Render<FilmReview.Views.Components.Register>(Html))
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -86,6 +79,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <base href="~/" />
     <script src="_framework/blazor.server.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

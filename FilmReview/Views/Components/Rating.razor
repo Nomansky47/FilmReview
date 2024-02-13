@@ -31,12 +31,12 @@
         <Card Background
         ="Background.Light" Style="width:600px">
             <CardTitle Size="3">
-                @Users.FirstOrDefault(p=>p.UserID==comment.UserID).NickName
+                @Users.FirstOrDefault(p => p.UserID == comment.UserID).NickName
             </CardTitle>
             <CardText>@comment.Text</CardText>
+                <CardText>Likes: @comment.Likes | Dislikes: @comment.Dislikes</CardText>
                 @if (FilmsAndData.isAdmin != null)
             {
-                <CardText>Likes: @comment.Likes | Dislikes: @comment.Dislikes</CardText>
                 <Div TextAlignment="TextAlignment.End" Padding="Padding.Is1.FromEnd">
                     <Button Color="Color.Success" Clicked="@(()=>CommentEnable(comment.CommentID))" >
                         Ответить
@@ -82,8 +82,8 @@
 @code {
     [Parameter]
     public FilmsAndData FilmsAndData { get; set; }
-    public List<Comments> Comments { get; set; }
-    public List<Comments> SubComments { get; set; } 
+    public List<Comments> Comments { get; set; } 
+    public List<Comments> SubComments { get; set; }
     public IEnumerable<Users> Users { get; set; }
     int oldRank = 0;
     public bool pressed { get; set; }
@@ -102,13 +102,6 @@
         Comments = AllComments.Where(p => p.TrackingOn == null).ToList();
         SubComments = AllComments.Where(p => p.TrackingOn != null).ToList();
         Users = _context.Users.ToList();
-        foreach (var comment in Comments)
-        {
-            if (comment.TrackingOn != null)
-            {
-            //
-            }
-        }
     }
     private async Task RateFilm()
     {
