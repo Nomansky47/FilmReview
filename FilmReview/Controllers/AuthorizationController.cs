@@ -3,6 +3,7 @@ using FilmReview.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NomaniusMVC;
+using NuGet.Protocol.Plugins;
 using System.Net;
 
 namespace FilmReview.Controllers
@@ -24,38 +25,36 @@ namespace FilmReview.Controllers
             ViewData["Registration"] = "Добро пожаловать на страницу регистрации";
             return View();
         }
-
-        public async Task<IActionResult> Register([Bind("UserID,NickName,UserLogin,Password,isAdmin,Surname,Name,Patronymic")] Users user)
+        [Route("Register/{NickName}/{UserLogin}/{Password}/{Surname}/{Name}/{Patronymic?}")]
+        public async Task<IActionResult> Register(string NickName,string UserLogin,string Password,string Surname,string Name,string? Patronymic)
         {
+            Users user = new Users();
+            user.NickName = NickName;
+            user.UserLogin = UserLogin;
+            user.Password = Password;
+            user.Surname = Surname;
+            user.Name = Name;
+            user.Patronymic = Patronymic;
             if (_context.Users.FirstOrDefault(p => p.UserLogin == user.UserLogin) == null)
             {
-                ViewData["Registration"] = "Добро пожаловать на страницу регистрации";
                 user.isAdmin = false;
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("HomePage", "Home");
             }
-            ViewData["Registration"] = "Пользователь с таким логином уже существует";
-            return View("RegistrationPage");
+            return View("HomePage","Not");
         }
-        public async  Task<IActionResult> Authorize(string Login,string Password)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(p => p.UserLogin == Login&&p.Password==Password);
-            if (user != null)
-            {
-                HttpContext.AddSession("userid", user.UserID.ToString());
-                if (user.isAdmin == true)
-                    HttpContext.setAdmin(true);
-                else
-                    HttpContext.setAdmin(false);
-                return RedirectToAction("HomePage","Home");
-            }
-            else
-            {
-                ViewData["Authorization"] = "Пользователь не найден, попробуйте использовать другой логин или пароль";
-                return View("AuthorizationPage");
-            }
-        }
+        [Route("Auth/{userid}/{isAdmin}")]
+          public async  Task<IActionResult> Auth(string userid,bool isAdmin)
+          {
+                  HttpContext.AddSession("userid", userid);
+                  if (isAdmin == true)
+                      HttpContext.setAdmin(true);
+                  else
+                      HttpContext.setAdmin(false);
+                  return RedirectToAction("HomePage","Home");
+          }
+        
         public IActionResult Exit()
         {
             HttpContext.DeleteAllSessions();

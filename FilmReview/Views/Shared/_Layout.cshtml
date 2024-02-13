@@ -1,5 +1,6 @@
 ﻿@inject IHttpContextAccessor HttpContextAccessor;
 @using NomaniusMVC  
+@using FilmReview.Views.Components
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
     <link href="_content/Blazorise/blazorise.css" rel="stylesheet" />
     <link href="_content/Blazorise.Bootstrap/blazorise.bootstrap.css" rel="stylesheet" />
+    <link href="_content/Blazorise.Snackbar/blazorise.snackbar.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/FilmReview.styles.css" asp-append-version="true" />
@@ -61,6 +63,12 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Authorization" asp-action="Exit">Exit</a>
                             </li>
                         }
+                        <li class="nav-item">
+                         @(await BlazorPage.Render<FilmReview.Views.Components.NewTest>(Html))
+                        </li>
+                        <li class="nav-item">
+                            @(await BlazorPage.Render<FilmReview.Views.Components.Register>(Html))
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -78,9 +86,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="_framework/blazor.server.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-
-<base href="~/" />
-<script src="_framework/blazor.server.js"></script>
