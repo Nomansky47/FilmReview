@@ -93,7 +93,7 @@
                 {
                     if (Patronymic == "") Patronymic = null;
                     ModalRef.Hide();
-                    _navigationManager.NavigateTo("Register/" + NickName + "/" + Login + "/" + Password + "/" + Surname + "/" + Name + "/" + Patronymic, false);
+                    _navigationManager.NavigateTo("Register/" + NickName + "/" + Login + "/" + Password + "/" + Surname + "/" + Name + "/" + Patronymic, true);
                     Message = "Успешная регистрация";
                     SnackBarNormal.Show();
                 }
