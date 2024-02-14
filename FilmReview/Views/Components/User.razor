@@ -1,0 +1,30 @@
+﻿@using Data
+@using Models
+@inject MyContext _context
+@inject NavigationManager _navigationManager
+    <Dropdown>
+        <DropdownToggle>
+        <Icon TextColor="TextColor.Success" Name="IconName.UserCircle"></Icon>  @CurrentUser.NickName
+        </DropdownToggle>
+        <DropdownMenu>
+        <DropdownItem TextColor="TextColor.Success" Disabled>@CurrentUser.Surname</DropdownItem>
+            <DropdownItem TextColor="TextColor.Success" Disabled>@CurrentUser.Name</DropdownItem>
+            <DropdownItem TextColor="TextColor.Success" Disabled>@CurrentUser.Patronymic</DropdownItem>
+            <DropdownDivider/>
+            <DropdownItem @onclick="Exit"><Icon TextColor="TextColor.Success" Name="IconName.Running"></Icon>   Выход</DropdownItem>
+    </DropdownMenu>
+</Dropdown>
+    @code{
+    [Parameter]
+    public string UserID { get; set; }
+    public Users CurrentUser {get;set;}
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentUser = _context.Users.FirstOrDefault(p => p.UserID == int.Parse(UserID));
+        if (CurrentUser.Patronymic == null) CurrentUser.Patronymic = "";
+    }
+    private async Task Exit()
+    {
+        _navigationManager.NavigateTo("Exit",true);
+    }
+}

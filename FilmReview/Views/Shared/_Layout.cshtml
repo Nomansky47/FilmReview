@@ -59,7 +59,7 @@
                         @if (HttpContextAccessor.HttpContext.isAdmin()!=null)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Authorization" asp-action="Exit">Exit</a>
+                                @(await BlazorPage.Render<FilmReview.Views.Components.User>(Html, new { UserID = HttpContextAccessor.HttpContext.GetSession("userid") }))
                             </li>
                         }
                     </ul>

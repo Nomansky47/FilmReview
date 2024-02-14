@@ -44,7 +44,7 @@ namespace FilmReview.Controllers
                       HttpContext.setAdmin(false);
                   return RedirectToAction("HomePage","Home");
           }
-        
+        [Route("Exit")]
         public IActionResult Exit()
         {
             HttpContext.DeleteAllSessions();

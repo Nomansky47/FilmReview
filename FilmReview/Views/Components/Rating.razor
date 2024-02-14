@@ -52,8 +52,7 @@
                     <TextEdit @bind-Text="TextSubComment" Placeholder="Комментарий к комментарию..." />
                 </FieldBody>
                 <Button Color="Color.Primary" Clicked="CommentOnComment" Type="ButtonType.Submit"            
-    PreventDefaultOnSubmit
-                 >Отправить</Button>
+    PreventDefaultOnSubmit>Отправить</Button>
              </Form>
         }
         @if (SubComments.FirstOrDefault(p=>p.TrackingOn==comment.CommentID)!=null)

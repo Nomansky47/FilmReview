@@ -49,8 +49,8 @@
         <Text TextColor="TextColor.Success">@Message</Text>
         </SnackbarBody>
     </Snackbar>
-<Snackbar TextSize="TextSize.Small" @ref="SnackBarError" Color="SnackbarColor.Light">
-    <SnackbarBody>
+    <Snackbar TextSize="TextSize.Small" @ref="SnackBarError" Color="SnackbarColor.Light">
+        <SnackbarBody>
         <Text TextColor="TextColor.Danger">@Message</Text>
     </SnackbarBody>
 </Snackbar>
@@ -84,7 +84,7 @@
     }
     private async Task SaveModal()
     {
-        if (NickName != "" && Patronymic != "" && Password2 != "" && Surname !="" &&Name != "" && Password != "" && Login != "")
+        if (NickName != "" && Password2 != "" && Surname !="" &&Name != "" && Password != "" && Login != "")
         {
             var user = _context.Users.FirstOrDefault(p => p.UserLogin == Login);
             if (Password == Password2)
