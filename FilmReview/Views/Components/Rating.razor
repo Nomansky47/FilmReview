@@ -10,10 +10,22 @@
         <Blazorise.Rating  TextColor="TextColor.Success" @bind-SelectedValue="@FilmsAndData.Rank" MaxValue="5" @onclick="RateFilm" />
     </Div>
 }
-<h4>О фильме: @FilmsAndData.Film.About</h4>
-<h5>Тэги: @FilmsAndData.Film.Tags</h5>
-<h5>Страна: @FilmsAndData.Film.Country | Год: @FilmsAndData.Film.Year </h5>
-<h5>Длительность: @FilmsAndData.Film.Duration | MPAA: @FilmsAndData.Film.MPAA </h5>
+<Text TextSize="TextSize.Small">О фильме: @FilmsAndData.Film.About</Text>
+<Fields>
+<Text>Тэги: @FilmsAndData.Film.Tags</Text>
+<Field>
+<Text>Страна: @FilmsAndData.Film.Country</Text>
+        </Field>
+        <Field>
+            <Text> Год: @FilmsAndData.Film.Year </Text>
+        </Field>
+        <Field>
+<Text>Длительность: @FilmsAndData.Film.Duration </Text> 
+</Field>
+<Field>
+<Text>MPAA: @FilmsAndData.Film.MPAA </Text>
+        </Field>
+    </Fields>
 @if (FilmsAndData.isAdmin != null)
 {
     <Form>

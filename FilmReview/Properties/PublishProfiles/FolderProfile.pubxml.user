@@ -8,4 +8,9 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <History>True|2024-02-06T11:37:18.7423115Z;True|2024-02-06T14:24:20.5534349+03:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
+  <ItemGroup>
+    <File Include="Views/Components/User.razor">
+      <publishTime>02/14/2024 14:12:42</publishTime>
+    </File>
+  </ItemGroup>
 </Project>
