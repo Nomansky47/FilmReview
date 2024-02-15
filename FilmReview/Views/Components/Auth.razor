@@ -1,4 +1,5 @@
 ﻿@using FilmReview.Data
+@using FilmReview.Models
 @inject MyContext _context
 @inject NavigationManager _navigationManager
 <Div Flex="Flex.JustifyContent.Around">
@@ -94,7 +95,7 @@
     private Snackbar SnackBarNormal;
     private Task ShowReg()
     {
-        return ModalAuth.Show();
+        return ModalReg.Show();
     }
 
     private async Task HideReg()
@@ -106,33 +107,45 @@
         Name = "";
         Password = "";
         Login = "";
-        await ModalAuth.Hide();
+        await ModalReg.Hide();
     }
     private async Task SaveReg()
     {
         if (NickName != "" && Password2 != "" && Surname != "" && Name != "" && Password != "" && Login != "")
         {
-            var user = _context.Users.FirstOrDefault(p => p.UserLogin == Login);
-            if (Password == Password2)
+            var finduser = _context.Users.FirstOrDefault(p => p.UserLogin == Login);
+            if (finduser == null)
             {
-                if (user == null)
+                if (Password == Password2)
                 {
                     if (Patronymic == "") Patronymic = null;
+                    Users user = new Users();
+                    user.NickName = NickName;
+                    user.UserLogin = Login;
+                    user.Password = Password;
+                    user.Surname = Surname;
+                    user.Name = Name;
+                    user.Patronymic = Patronymic;
                     ModalReg.Hide();
-                    _navigationManager.NavigateTo("Register/" + NickName + "/" + Login + "/" + Password + "/" + Surname + "/" + Name + "/" + Patronymic, true);
+                    if (_context.Users.FirstOrDefault(p => p.UserLogin == user.UserLogin) == null)
+                    {
+                        user.isAdmin = false;
+                        _context.Users.Add(user);
+                        await _context.SaveChangesAsync();
+                    }
                     Message = "Успешная регистрация";
-                    ModalAuth.Show();
                     SnackBarNormal.Show();
+                    ModalAuth.Show();
                 }
                 else
                 {
-                    Message = "Пользователь с таким логином уже существует!";
+                    Message = "Введенные пароли не совпадают!";
                     SnackBarError.Show();
                 }
             }
             else
             {
-                Message = "Введенные пароли не совпадают!";
+                Message = "Пользователь с таким логином уже существует!";
                 SnackBarError.Show();
             }
         }
