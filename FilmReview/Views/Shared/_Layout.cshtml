@@ -34,9 +34,6 @@
                             <li class="nav-item">
                                 @(await BlazorPage.Render<FilmReview.Views.Components.Auth>(Html))
                             </li>
-                            <li class="nav-item">
-                                @(await BlazorPage.Render<FilmReview.Views.Components.Register>(Html))
-                            </li>
                         }
                          @if (HttpContextAccessor.HttpContext.isAdmin()==true)
                         {
