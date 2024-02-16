@@ -1,0 +1,199 @@
+﻿@using FilmReview.Data
+@using FilmReview.Models
+@using NomaniusMVC
+@inject MyContext _context
+@inject NavigationManager _navigationManager
+<Div Flex="Flex.JustifyContent.Around">
+<Button @onclick="ShowAuth">Авторизация</Button>
+<Button @onclick="ShowReg">Регистрация</Button>
+</Div>
+<Modal @ref="ModalAuth">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Авторизация</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Логин</FieldLabel>
+                <TextEdit @bind-Text="Login" Placeholder="Введите логин..." />
+            </Field>
+            <Field>
+                <FieldLabel>Пароль</FieldLabel>
+                <TextEdit @bind-Text="Password" Placeholder="Введите пароль..." />
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideAuth">Назад</Button>
+            <Button Color="Color.Primary" Clicked="@Authorize">Войти</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+<Snackbar TextSize="TextSize.Small" @ref="SnackBarNormal" Color="SnackbarColor.Light">
+    <SnackbarBody>
+        <Text TextColor="TextColor.Success">@Message</Text>
+        </SnackbarBody>
+    </Snackbar>
+<Snackbar TextSize="TextSize.Small"  @ref="SnackBarError" Color="SnackbarColor.Light">
+    <SnackbarBody>
+        <Text TextColor="TextColor.Danger">@Message</Text>
+    </SnackbarBody>
+</Snackbar>
+    <Modal @ref="ModalReg">
+        <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Регистрация</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Никнейм</FieldLabel>
+                <TextEdit @bind-Text="NickName" Placeholder="Придумайте никнейм..." />
+            </Field>
+            <Field>
+                <FieldLabel>Логин</FieldLabel>
+                <TextEdit @bind-Text="Login" Placeholder="Придумайте логин..." />
+            </Field>
+            <Field>
+                <FieldLabel>Пароль</FieldLabel>
+                <TextEdit Role="TextRole.Password" @bind-Text="Password" Placeholder="Придумайте пароль..." />
+            </Field>
+            <Field>
+                <FieldLabel>Пароль</FieldLabel>
+                <TextEdit Role="TextRole.Password" @bind-Text="Password2" Placeholder="Повторите пароль..." />
+            </Field>
+            <Field>
+                <FieldLabel>Фамилия</FieldLabel>
+                <TextEdit @bind-Text="Surname" Placeholder="Введите вашу фамилию..." />
+            </Field>
+            <Field>
+                <FieldLabel>Имя</FieldLabel>
+                <TextEdit @bind-Text="Name" Placeholder="Введите ваше имя..." />
+            </Field>
+            <Field>
+                <FieldLabel>Отчество</FieldLabel>
+                <TextEdit @bind-Text="Patronymic" Placeholder="Введите ваше отчество (если оно у вас есть)..." />
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideReg">Назад</Button>
+            <Button Color="Color.Primary" Clicked="@SaveReg">Зарегестрироваться</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+    @code {
+    private Modal ModalAuth;
+    private Modal ModalReg;
+    private string NickName { get; set; } = "";
+    private string Login { get; set; } = "";
+    private string Password { get; set; } = "";
+    private string Password2 { get; set; } = "";
+    private string Surname { get; set; } = "";
+    private string Name { get; set; } = "";
+    private string? Patronymic { get; set; }
+    private string Message { get; set; } = "";
+    private Snackbar SnackBarError;
+    private Snackbar SnackBarNormal;
+    private Task ShowReg()
+    {
+        return ModalReg.Show();
+    }
+
+    private async Task HideReg()
+    {
+        NickName = "";
+        Patronymic = "";
+        Password2 = "";
+        Surname = "";
+        Name = "";
+        Password = "";
+        Login = "";
+        await ModalReg.Hide();
+    }
+
+    private async Task SaveReg()
+    {
+        if (NickName != "" && Password2 != "" && Surname != "" && Name != "" && Password != "" && Login != "")
+        {
+            if (!(NickName.Length>20&&Password.Length>50&&Surname.Length>50&&Name.Length>50&&Patronymic.Length>50&&Password2.Length>50))
+            {
+                var finduser = _context.Users.FirstOrDefault(p => p.UserLogin == Login);
+                if (finduser == null)
+                {
+                    if (Password == Password2)
+                    {
+                        if (Patronymic == "") Patronymic = null;
+                        Users user = new Users();
+                        user.NickName = NickName;
+                        user.UserLogin = Login;
+                        user.Password = Password;
+                        user.Surname = Surname;
+                        user.Name = Name;
+                        user.Patronymic = Patronymic;
+                        ModalReg.Hide();
+                        if (_context.Users.FirstOrDefault(p => p.UserLogin == user.UserLogin) == null)
+                        {
+                            user.isAdmin = false;
+                            _context.Users.Add(user);
+                            await _context.SaveChangesAsync();
+                        }
+                        Message = "Успешная регистрация";
+                        SnackBarNormal.Show();
+                        ModalAuth.Show();
+                    }
+                    else
+                    {
+
+                        Message = "Введенные пароли не совпадают!";
+                        SnackBarError.Show();
+                    }
+                }
+                else
+                {
+                    Message = "Введенные данные слишком длинны!";
+                    SnackBarError.Show();
+                }
+            }
+            else
+            {
+                Message = "Пользователь с таким логином уже существует!";
+                SnackBarError.Show();
+            }
+        }
+        else
+        {
+            Message = "Не все данные были введены!";
+            SnackBarError.Show();
+        }
+    }
+
+    private Task ShowAuth()
+    {
+        return ModalAuth.Show();
+    }
+
+    private async Task HideAuth()
+    {
+        Password = "";
+        Login = "";
+        await ModalAuth.Hide();
+    }
+
+   private async Task Authorize()
+     {
+         var user = _context.Users.FirstOrDefault(p => p.UserLogin == Login && p.Password == Password);
+         if (user != null&&Login.Length<50&&Password.Length<50)
+         {
+             ModalAuth.Hide();
+             _navigationManager.NavigateTo("Auth/" + user.UserID + "/" + user.isAdmin, true);
+             Message = "Успешная авторизация!";
+             await SnackBarNormal.Show();
+         }
+         else
+         {
+             Message="Неправильно введенный логин или пароль!";
+             SnackBarError.Show();
+         }
+     }
+}

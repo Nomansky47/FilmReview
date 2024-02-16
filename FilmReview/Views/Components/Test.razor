@@ -1,0 +1,14 @@
+﻿<Dropdown @ref="dropdown">
+    <DropdownMenu >
+            <DropdownItem TextColor="TextColor.Success" Disabled>Работает?</DropdownItem>
+            <DropdownDivider />
+            <DropdownItem>Выхода нет</DropdownItem>
+        </DropdownMenu>
+    </Dropdown>
+@code{
+    Dropdown dropdown;
+    protected override async Task OnInitializedAsync()
+    {
+        await dropdown.Show();
+    }
+}

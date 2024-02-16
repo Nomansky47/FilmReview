@@ -32,7 +32,7 @@
                         @if (HttpContextAccessor.HttpContext.isAdmin()==null)
                         {
                             <li class="nav-item">
-                                @(await BlazorPage.Render<FilmReview.Views.Components.Auth>(Html))
+                                @(await BlazorPage.Render<FilmReview.Views.Components.RegAuth>(Html))
                             </li>
                         }
                          @if (HttpContextAccessor.HttpContext.isAdmin()==true)
