@@ -11,21 +11,12 @@
     </Div>
 }
 <Text TextSize="TextSize.Small">О фильме: @FilmsAndData.Film.About</Text>
-<Fields>
-<Text>Тэги: @FilmsAndData.Film.Tags</Text>
-<Field>
-<Text>Страна: @FilmsAndData.Film.Country</Text>
-        </Field>
-        <Field>
-            <Text> Год: @FilmsAndData.Film.Year </Text>
-        </Field>
-        <Field>
-<Text>Длительность: @FilmsAndData.Film.Duration </Text> 
-</Field>
-<Field>
-<Text>MPAA: @FilmsAndData.Film.MPAA </Text>
-        </Field>
-    </Fields>
+<br/>
+<Badge Color="Color.Success">Тэги: @FilmsAndData.Film.Tags</Badge>
+<Badge Color="Color.Success">Страна: @FilmsAndData.Film.Country</Badge>
+ <Badge Color="Color.Success">Год: @FilmsAndData.Film.Year</Badge>
+<Badge Color="Color.Success">Длительность: @FilmsAndData.Film.Duration </Badge>
+<Badge Color="Color.Success">MPAA: @FilmsAndData.Film.MPAA </Badge>
 @if (FilmsAndData.isAdmin != null)
 {
     <Form>
@@ -46,7 +37,7 @@
                 @Users.FirstOrDefault(p => p.UserID == comment.UserID).NickName
             </CardTitle>
             <CardText>@comment.Text</CardText>
-                <CardText>Likes: @comment.Likes | Dislikes: @comment.Dislikes</CardText>
+                <CardText><Button><Icon TextColor="TextColor.Success" Name="IconName.PlusCircle"></Icon></Button> @comment.Likes<Button><Icon TextColor="TextColor.Danger" Name="IconName.MinusCircle"></Icon></Button> @comment.Dislikes</CardText>
                 @if (FilmsAndData.isAdmin != null)
             {
                 <Div TextAlignment="TextAlignment.End" Padding="Padding.Is1.FromEnd">
