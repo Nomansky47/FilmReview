@@ -23,7 +23,7 @@
          <FieldBody ColumnSize="ColumnSize.Is10">
              <TextEdit @bind-Text="TextComment" Placeholder="Комментарий..." />
          </FieldBody>
-         <Button Color="Color.Primary" Clicked="Comment" Type="ButtonType.Submit" PreventDefaultOnSubmit>Отправить</Button>
+        <Button Color="Color.Primary" Clicked="WriteComment" Type="ButtonType.Submit" PreventDefaultOnSubmit>Отправить</Button>
  </Form>
     <br />
 }
@@ -31,31 +31,15 @@
 {
     foreach (var comment in Comments)
     {
-        <Card Background
-        ="Background.Light" Style="width:600px">
-            <CardTitle Size="3">
-                @Users.FirstOrDefault(p => p.UserID == comment.UserID).NickName
-            </CardTitle>
-            <CardText>@comment.Text</CardText>
-                <CardText><Button><Icon TextColor="TextColor.Success" Name="IconName.PlusCircle"></Icon></Button> @comment.Likes<Button><Icon TextColor="TextColor.Danger" Name="IconName.MinusCircle"></Icon></Button> @comment.Dislikes</CardText>
-                @if (FilmsAndData.isAdmin != null)
-            {
-                <Div TextAlignment="TextAlignment.End" Padding="Padding.Is1.FromEnd">
-                    <Button Color="Color.Success" Clicked="@(()=>CommentEnable(comment.CommentID))" >
-                        Ответить
-                        <Icon Name="IconName.ArrowDown"></Icon>
-                    </Button>
-                </Div>
-            }
-        </Card>
+        @Comment(FilmsAndData.isAdmin,comment);
         @if (CommentingOn == comment.CommentID)
         {
             <Form>
                 <FieldBody ColumnSize="ColumnSize.Is10">
                     <TextEdit @bind-Text="TextSubComment" Placeholder="Комментарий к комментарию..." />
                 </FieldBody>
-                <Button Color="Color.Primary" Clicked="CommentOnComment" Type="ButtonType.Submit"            
-    PreventDefaultOnSubmit>Отправить</Button>
+                <Button Color="Color.Primary" Clicked="WriteCommentOnComment" Type="ButtonType.Submit"
+                    PreventDefaultOnSubmit>Отправить</Button>
              </Form>
         }
         @if (SubComments.FirstOrDefault(p=>p.TrackingOn==comment.CommentID)!=null)
@@ -63,24 +47,56 @@
             var CurrentSubComments = SubComments.Where(p => p.TrackingOn == comment.CommentID);
             @foreach (var subcomment in CurrentSubComments)
             {
-                <Div Padding="Padding.Is5.FromStart">
-                    <Card Background="Background.Light" Style="width:600px">
-                        <CardTitle Size="3">
-                            @Users.FirstOrDefault(p => p.UserID == subcomment.UserID).NickName
-                        </CardTitle>
-                        <CardText>@subcomment.Text</CardText>
-                            <Div TextAlignment="TextAlignment.End" Padding="Padding.Is1.FromEnd">
-                            </Div>
-                        </Card>
-                    </Div>
+                @SubComment(subcomment);
             }
-                <br />
+                <br/>
         }
 
 
 }
 }
 @code {
+    private RenderFragment SubComment(Comments subcomment)
+    {
+        return@<Div Padding="Padding.Is5.FromStart">
+        <Card Background="Background.Light" Style="width:600px">
+            <CardTitle Size="3">
+                @Users.FirstOrDefault(p => p.UserID == subcomment.UserID).NickName
+            </CardTitle>
+            <CardText>@subcomment.Text</CardText>
+            <Div TextAlignment="TextAlignment.End" Padding="Padding.Is1.FromEnd">
+            </Div>
+        </Card>
+    </Div>;
+    }
+    private RenderFragment Comment(bool? isAdmin,Comments comment)
+    {
+        if (isAdmin != null)
+        {
+            return
+@<Card Background="Background.Light" Style="width:600px">
+                <CardTitle Size="3">
+                    @Users.FirstOrDefault(p => p.UserID == comment.UserID).NickName
+                </CardTitle>
+                <CardText>comment.Text</CardText>
+                    <CardText><Button><Icon TextColor="TextColor.Success" Name="IconName.PlusCircle"></Icon></Button> @comment.Likes<Button><Icon TextColor="TextColor.Danger" Name="IconName.MinusCircle"></Icon></Button> @comment.Dislikes</CardText>
+                    <Div TextAlignment="TextAlignment.End" Padding="Padding.Is1.FromEnd">
+                        <Button Color="Color.Success" Clicked="(()=>CommentEnable(comment.CommentID))">
+                            Ответить
+                            <Icon Name="IconName.ArrowDown"></Icon>
+                        </Button>
+                    </Div>
+            </Card>;
+            }
+            else
+            return @<Card Background="Background.Light" Style="width:600px">
+                <CardTitle Size="3">
+                    @Users.FirstOrDefault(p => p.UserID == comment.UserID).NickName
+                </CardTitle>
+                <CardText>comment.Text</CardText>
+                    <CardText><Button><Icon TextColor="TextColor.Success" Name="IconName.PlusCircle"></Icon></Button> @comment.Likes<Button><Icon TextColor="TextColor.Danger" Name="IconName.MinusCircle"></Icon></Button> @comment.Dislikes</CardText>
+    </Card>;
+    }
     [Parameter]
     public FilmsAndData FilmsAndData { get; set; }
     public List<Comments> Comments { get; set; } 
@@ -131,7 +147,7 @@
             await _context.SaveChangesAsync();
         }
     }
-    private async Task Comment()
+    private async Task WriteComment()
     {
         if (TextComment != "")
         {
@@ -152,7 +168,7 @@
     {
         CommentingOn = CommentID;
     }
-    private async Task CommentOnComment()
+    private async Task WriteCommentOnComment()
     {
         if (TextSubComment != "")
         {
