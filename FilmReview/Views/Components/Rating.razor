@@ -2,21 +2,25 @@
 @using FilmReview.Data
 @using Microsoft.EntityFrameworkCore
 @inject MyContext _context
+
 <img src="@FilmsAndData.Film.FilmImageLink" />
 <h1>@((float)FilmsAndData.Film.Summ / (float)FilmsAndData.Film.Total) </h1>
+
 @if (FilmsAndData.isAdmin != null)
 {
     <Div class="display-6">
         <Blazorise.Rating  TextColor="TextColor.Success" @bind-SelectedValue="@FilmsAndData.Rank" MaxValue="5" @onclick="RateFilm" />
     </Div>
 }
+
 <Text TextSize="TextSize.Small">О фильме: @FilmsAndData.Film.About</Text>
 <br/>
 <Badge Color="Color.Success">Тэги: @FilmsAndData.Film.Tags</Badge>
 <Badge Color="Color.Success">Страна: @FilmsAndData.Film.Country</Badge>
- <Badge Color="Color.Success">Год: @FilmsAndData.Film.Year</Badge>
+<Badge Color="Color.Success">Год: @FilmsAndData.Film.Year</Badge>
 <Badge Color="Color.Success">Длительность: @FilmsAndData.Film.Duration </Badge>
 <Badge Color="Color.Success">MPAA: @FilmsAndData.Film.MPAA </Badge>
+
 @if (FilmsAndData.isAdmin != null)
 {
     <Form>
@@ -27,6 +31,7 @@
  </Form>
     <br />
 }
+
 @if(Comments.FirstOrDefault()!=null)
 {
     foreach (var comment in Comments)
@@ -51,10 +56,9 @@
             }
                 <br/>
         }
-
-
 }
 }
+
 @code {
     private RenderFragment SubComment(Comments subcomment)
     {
@@ -69,12 +73,13 @@
         </Card>
     </Div>;
     }
+
     private RenderFragment Comment(bool? isAdmin,Comments comment)
     {
         if (isAdmin != null)
         {
             return
-@<Card Background="Background.Light" Style="width:600px">
+            @<Card Background="Background.Light" Style="width:600px">
                 <CardTitle Size="3">
                     @Users.FirstOrDefault(p => p.UserID == comment.UserID).NickName
                 </CardTitle>
@@ -89,14 +94,16 @@
             </Card>;
             }
             else
-            return @<Card Background="Background.Light" Style="width:600px">
+            return 
+            @<Card Background="Background.Light" Style="width:600px">
                 <CardTitle Size="3">
                     @Users.FirstOrDefault(p => p.UserID == comment.UserID).NickName
                 </CardTitle>
                 <CardText>comment.Text</CardText>
-                    <CardText><Button><Icon TextColor="TextColor.Success" Name="IconName.PlusCircle"></Icon></Button> @comment.Likes<Button><Icon TextColor="TextColor.Danger" Name="IconName.MinusCircle"></Icon></Button> @comment.Dislikes</CardText>
-    </Card>;
+                <CardText><Button><Icon TextColor="TextColor.Success" Name="IconName.PlusCircle"></Icon></Button> @comment.Likes<Button><Icon TextColor="TextColor.Danger" Name="IconName.MinusCircle"></Icon></Button> @comment.Dislikes</CardText>
+            </Card>;
     }
+
     [Parameter]
     public FilmsAndData FilmsAndData { get; set; }
     public List<Comments> Comments { get; set; } 
@@ -107,6 +114,7 @@
     public string TextComment { get; set; } = "";
     public string TextSubComment { get; set; } = "";
     public int? CommentingOn { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         if (FilmsAndData.Rank != 0)
@@ -120,6 +128,7 @@
         SubComments = AllComments.Where(p => p.TrackingOn != null).ToList();
         Users = _context.Users.ToList();
     }
+
     private async Task RateFilm()
     {
         if (FilmsAndData.Rank > 0 && FilmsAndData.Rank < 6)
@@ -147,6 +156,7 @@
             await _context.SaveChangesAsync();
         }
     }
+
     private async Task WriteComment()
     {
         if (TextComment != "")
@@ -164,10 +174,12 @@
             await _context.SaveChangesAsync();
         }
     }
+
     private async Task CommentEnable(int CommentID)
     {
         CommentingOn = CommentID;
     }
+
     private async Task WriteCommentOnComment()
     {
         if (TextSubComment != "")
