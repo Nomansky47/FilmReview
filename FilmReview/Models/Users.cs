@@ -22,5 +22,7 @@ namespace FilmReview.Models
 
         public virtual ICollection<Comments> Comments { get; set; }
         public virtual ICollection<Reviews> Reviews { get; set; }
+        public virtual ICollection<Likes> Likes { get; set; }
+        public virtual ICollection<Dislikes> Dislikes { get; set; }
     }
 }

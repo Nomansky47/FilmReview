@@ -12,14 +12,21 @@ namespace FilmReview.Models
         public int UserID { get; set; }
         [Required]
         public int FilmID { get; set; }
+        public int LikeID { get; set; }
+        public int DislikeID { get; set; }
+
         [Required]
         public int Row { get; set; } = 0;
         [Required]
         public string Text { get; set; }
         [Required]
-        public int Likes { get; set; }
+        public int Likes { get; set; } = 0;
         [Required]
-        public int Dislikes { get; set; }
+        public int Dislikes { get; set; } = 0;
+        [ForeignKey("LikeID")]
+        public virtual Likes LikeObj { get; set; }
+        [ForeignKey("DislikeID")]
+        public virtual Likes DislikeObj { get; set; }
         [ForeignKey("UserID")]
         public virtual Users Users { get; set; }
         [ForeignKey("FilmID")]

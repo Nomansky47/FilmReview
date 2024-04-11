@@ -182,7 +182,14 @@
         SubComments = AllComments.Where(p => p.TrackingOn != null).ToList();
         Users = _context.Users.ToList();
     }
+    private async Task Like(int commentID)
+    {
 
+    }
+    private async Task Dislike(int commentID)
+    {
+
+    }
     private async Task RateFilm()
     {
         if (FilmsAndData.Rank > 0 && FilmsAndData.Rank < 6)
