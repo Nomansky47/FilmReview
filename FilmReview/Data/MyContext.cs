@@ -19,5 +19,9 @@ namespace FilmReview.Data
         public DbSet<Comments>? Comments { get; set; }
         [JsonIgnore]
         public DbSet<Reviews>? Reviews { get; set; }
+        [JsonIgnore]
+        public DbSet<Likes>? Likes { get; set; }
+        [JsonIgnore]
+        public DbSet<Dislikes>? Dislikes { get; set; }
     }
 }

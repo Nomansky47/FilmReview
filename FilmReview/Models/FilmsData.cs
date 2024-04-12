@@ -1,6 +1,6 @@
 ﻿namespace FilmReview.Models
 {
-    public class FilmsAndData
+    public class FilmsData
     {
         public Films Film { get; set; }
         public bool? isAdmin { get; set; }

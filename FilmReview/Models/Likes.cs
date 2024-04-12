@@ -10,10 +10,10 @@ namespace FilmReview.Models
         [Required]
         public int UserID { get; set; }
         [Required]
-        public int FilmID { get; set; }
+        public int CommentID { get; set; }
         [ForeignKey("UserID")]
         public virtual Users Users { get; set; }
-        [ForeignKey("FilmID")]
-        public virtual Films Films { get; set; }
+        [ForeignKey("CommentID")]
+        public virtual Comments Comments { get; set; }
     }
 }

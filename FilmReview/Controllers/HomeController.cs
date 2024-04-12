@@ -27,7 +27,7 @@ namespace FilmReview.Controllers
         {
             var films = await _context.Films.ToListAsync();
             var list = await _context.Reviews.ToListAsync();
-            FilmsAndData FilmsAndData = new FilmsAndData();
+            FilmsData FilmsAndData = new FilmsData();
             FilmsAndData.Film = films.FirstOrDefault(f => f.FilmID == id);
             FilmsAndData.isAdmin = HttpContext.isAdmin();
             if (HttpContext.GetSession("userid")!=null)

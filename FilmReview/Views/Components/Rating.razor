@@ -78,6 +78,33 @@
 }
 
 @code {
+
+    [Parameter]
+    public FilmsData FilmsAndData {get;set;}
+    public List<Comments> Comments { get; set; } 
+    public List<Comments> SubComments { get; set; }
+    public IEnumerable<Users> Users { get; set; }
+    int oldRank = 0;
+    public bool pressed { get; set; }
+    public string TextComment { get; set; } = "";
+    public string TextSubComment { get; set; } = "";
+    public int? CommentingOn { get; set; }
+    public int RowCounter=1;
+
+        protected override async Task OnInitializedAsync()
+        {
+        if (FilmsAndData.Rank != 0)
+        {
+            oldRank = FilmsAndData.Rank;
+            pressed = true;
+        }
+        else pressed = false;
+        var AllComments = _context.Comments.Where(p => p.FilmID == FilmsAndData.Film.FilmID).ToList();
+        Comments = AllComments.Where(p => p.TrackingOn == null).ToList();
+        SubComments = AllComments.Where(p => p.TrackingOn != null).ToList();
+        Users = _context.Users.ToList();
+    }
+
     private RenderFragment LastComment(Comments subcomment)
     {
         return@<Div Padding="Padding.Is5.FromStart">
@@ -107,9 +134,15 @@
             @Users.FirstOrDefault(p => p.UserID == comment.UserID).NickName
         </CardTitle>
         <CardText>@comment.Text</CardText>
-        <CardText><Button><Icon TextColor="TextColor.Success" Name="IconName.PlusCircle"></Icon></Button> @comment.Likes<Button><Icon TextColor="TextColor.Danger" Name="IconName.MinusCircle"></Icon></Button> @comment.Dislikes</CardText>
+        <CardText>
+                <Button Clicked="()=>Like(comment.CommentID)">
+        <Icon TextColor="TextColor.Success" Name="IconName.PlusCircle"></Icon>
+        </Button> 
+        @comment.Likes<Button Clicked="()=>Dislike(comment.CommentID)">
+        <Icon TextColor="TextColor.Danger" Name="IconName.MinusCircle"></Icon>
+        </Button> @comment.Dislikes</CardText>
         <Div TextAlignment="TextAlignment.End" Padding="Padding.Is1.FromEnd">
-            <Button Color="Color.Success" Clicked="(()=>CommentEnable(comment.CommentID))">
+            <Button Color="Color.Success" Clicked="()=>CommentEnable(comment.CommentID)">
                 Ответить
                 <Icon Name="IconName.ArrowDown"></Icon>
             </Button>
@@ -134,9 +167,15 @@
             @Users.FirstOrDefault(p => p.UserID == comment.UserID).NickName
         </CardTitle>
         <CardText>@comment.Text</CardText>
-        <CardText><Button><Icon TextColor="TextColor.Success" Name="IconName.PlusCircle"></Icon></Button> @comment.Likes<Button><Icon TextColor="TextColor.Danger" Name="IconName.MinusCircle"></Icon></Button> @comment.Dislikes</CardText>
+            <CardText>
+                <Button Clicked="()=>Like(comment.CommentID)">
+        <Icon TextColor="TextColor.Success" Name="IconName.PlusCircle"></Icon></Button>
+        @comment.Likes
+                <Button Clicked="()=>Dislike(comment.CommentID)">
+                    <Icon TextColor="TextColor.Danger" Name="IconName.MinusCircle"></Icon>
+        </Button> @comment.Dislikes</CardText>
         <Div TextAlignment="TextAlignment.End" Padding="Padding.Is1.FromEnd">
-            <Button Color="Color.Success" Clicked="(()=>CommentEnable(comment.CommentID))">
+            <Button Color="Color.Success">
                 Ответить
                 <Icon Name="IconName.ArrowDown"></Icon>
             </Button>
@@ -154,41 +193,44 @@
                 <CardText>@comment.Text</CardText>
                 <CardText><Button><Icon TextColor="TextColor.Success" Name="IconName.PlusCircle"></Icon></Button> @comment.Likes<Button><Icon TextColor="TextColor.Danger" Name="IconName.MinusCircle"></Icon></Button> @comment.Dislikes</CardText>
             </Card>
-            </Div>;
+            </Div>
+    ;
     }
 
-    [Parameter]
-    public FilmsAndData FilmsAndData { get; set; }
-    public List<Comments> Comments { get; set; } 
-    public List<Comments> SubComments { get; set; }
-    public IEnumerable<Users> Users { get; set; }
-    int oldRank = 0;
-    public bool pressed { get; set; }
-    public string TextComment { get; set; } = "";
-    public string TextSubComment { get; set; } = "";
-    public int? CommentingOn { get; set; }
-    public int RowCounter=1;
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (FilmsAndData.Rank != 0)
-        {
-            oldRank = FilmsAndData.Rank;
-            pressed = true;
-        }
-        else pressed = false;
-        var AllComments = _context.Comments.Where(p => p.FilmID == FilmsAndData.Film.FilmID).ToList();
-        Comments = AllComments.Where(p => p.TrackingOn == null).ToList();
-        SubComments = AllComments.Where(p => p.TrackingOn != null).ToList();
-        Users = _context.Users.ToList();
-    }
     private async Task Like(int commentID)
     {
-
+        Likes Likes = new Likes();
+        Likes.CommentID = commentID;
+        Likes.UserID=(int)FilmsAndData.currentUserID;
+        if (_context.Likes.FirstOrDefault(p => p.UserID == Likes.UserID && p.CommentID == Likes.CommentID) == null)
+        {
+            if (_context.Dislikes.FirstOrDefault(p => p.UserID == Likes.UserID && p.CommentID == Likes.CommentID) != null)
+            {
+                _context.Dislikes.RemoveRange(_context.Dislikes.FirstOrDefault(p => p.UserID == Likes.UserID && p.CommentID == Likes.CommentID));
+                _context.Comments.FirstOrDefault(p => p.CommentID == Likes.CommentID).Dislikes--;
+            }
+            _context.Likes.Add(Likes);
+            _context.Comments.FirstOrDefault(p => p.CommentID == Likes.CommentID).Likes++;
+            await _context.SaveChangesAsync();
+        }
     }
+
     private async Task Dislike(int commentID)
     {
-
+        Dislikes Dislikes = new Dislikes();
+        Dislikes.CommentID = commentID;
+        Dislikes.UserID = (int)FilmsAndData.currentUserID;
+        if (_context.Dislikes.FirstOrDefault(p=>p.UserID==Dislikes.UserID&&p.CommentID==Dislikes.CommentID)==null)
+        {
+            if(_context.Likes.FirstOrDefault(p => p.UserID == Dislikes.UserID && p.CommentID == Dislikes.CommentID) != null)
+            {
+                _context.Likes.RemoveRange(_context.Likes.FirstOrDefault(p => p.UserID == Dislikes.UserID && p.CommentID == Dislikes.CommentID));
+                _context.Comments.FirstOrDefault(p => p.CommentID == Dislikes.CommentID).Likes--;
+            }
+            _context.Dislikes.Add(Dislikes);
+            _context.Comments.FirstOrDefault(p => p.CommentID == Dislikes.CommentID).Dislikes++;
+            await _context.SaveChangesAsync();
+        }
     }
     private async Task RateFilm()
     {

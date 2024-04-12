@@ -33,9 +33,5 @@ namespace FilmReview.Models
         public virtual ICollection<Images> Images { get; set; }
         [JsonIgnore]
         public virtual ICollection<Reviews> Reviews { get; set; }
-        [JsonIgnore]
-        public virtual ICollection<Likes> Likes { get; set; }
-        [JsonIgnore]
-        public virtual ICollection<Dislikes> Dislikes { get; set; }
     }
 }
