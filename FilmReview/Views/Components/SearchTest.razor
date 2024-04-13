@@ -24,24 +24,25 @@
     {
     for (var i = 0; i < Films.Count; i += 4)
     {
-    <div class="row">
-        @for (var j = i; j < i + 4 && j < Films.Count; j++)
+        <Div Class="row">
+        @for (var j = i; j < i + 4 && j < Films.Count-1; j++)
         {
            float Rating = 0;
+           string link = "Home/FilmDetails/" + @Films[j].FilmID.ToString();
             if (Films[j].Total != 0)
                 Rating = (float)Films[j].Summ / (float)Films[j].Total;
             <div class="col" style="margin-bottom: 10px;">
-               <div class="card">
-                            <img style="align-self:center;" src="@Films[j].FilmImageLink" alt="@error" width="190" height="250" />
-                    <div class="card-body">
-                        <h5 class="card-title">@Films[j].FilmName @Rating</h5>
-                        <p class="card-text">@Films[j].Tags</p>
-                        <a href="Home/FilmDetails/@Films[j].FilmID" class="btn btn-success">Подробнее</a>
-                    </div>
-                </div>
+                         <Card>
+                        <CardImage style="align-self:center;" Source="@Films[j].FilmImageLink" Alt="@error" Width="Width.Px(190)" Height="Height.Px(250)" />
+                    <CardBody >
+                        <CardTitle>@Films[j].FilmName @Rating</CardTitle>
+                        <CardText>@Films[j].Tags</CardText>
+                      <Blazorise.Link To="@link">Подробнее</Blazorise.Link>
+                    </CardBody>
+                </Card>
             </div>
         }
-    </div>
+            </Div>
 }
     }
 </div>

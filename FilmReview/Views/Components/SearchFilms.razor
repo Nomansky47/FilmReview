@@ -8,49 +8,48 @@
         Выберите тэги для поиска
     </DropdownToggle>
     <DropdownMenu>
-        @foreach(var genre in Genres)
+        @foreach (var genre in Genres)
         {
             <DropdownItem ShowCheckbox CheckedChanged="@(()=>ChooseItem(genre))">@genre</DropdownItem>
         }
     </DropdownMenu>
 </Dropdown>
 <br />
-@foreach (var genre in SelectedGenres) { ShowGenres += genre + " "; }
-<h4>@ShowGenres</h4>
 <div class="container">
-    @if (Films.FirstOrDefault()==null)
+    @if (Films.FirstOrDefault() == null)
     {
-        <Text>Таких фильмов нет</text>
+        <Text>Таких фильмов нет</Text>
     }
     else
     {
-    for (var i = 0; i < Films.Count; i += 4)
-    {
-        <div class="row">
-            @for (var j = i; j < i + 4 && j < Films.Count; j++)
-            {
-                float Rating = 0;
-                if (Films[j].Total != 0)
-                    Rating = (float)Films[j].Summ / (float)Films[j].Total;
-                <div class="card col" style="margin-bottom: 10px; margin-right: 10px;">
-                    <img src="@Films[j].FilmImageLink" alt="@error" width="170" height="250" />
-                    <div class="card-body">
-                     <h5>@Films[j].FilmName @Rating</h5>
-                            <p>@Films[j].Tags</p>
-                     <a class="btn btn-success" href="Home/FilmDetails/@Films[j].FilmID">Подробнее</a>
+        for (var i = 0; i < Films.Count; i += 4)
+        {
+            <div class="row">
+                @for (var j = i; j < i + 4 && j < Films.Count; j++)
+                {
+                    float Rating = 0;
+                    if (Films[j].Total != 0)
+                        Rating = (float)Films[j].Summ / (float)Films[j].Total;
+                    <div class="col" style="margin-bottom: 10px;">
+                        <div class="card" style="max-width:290px;">
+                            <img style="align-self:center;" src="@Films[j].FilmImageLink" alt="@error" width="190" height="250" />
+                            <div class="card-body">
+                                <h5 class="card-title">@Films[j].FilmName <Icon TextColor="TextColor.Success" Name="IconName.Star"></Icon> @Rating</h5>
+                                <p class="card-text">@Films[j].Tags</p>
+                                <a href="Home/FilmDetails/@Films[j].FilmID" class="btn btn-success">Подробнее</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            }
-        </div>
-    }
+                }
+            </div>
+        }
     }
 </div>
 
 @code {
-    string ShowGenres = "";
     public string error = "Картинка фильма";
-    public List<Films> Films{ get; set; }
-    public IEnumerable<string> Genres{ get; set; }
+    public List<Films> Films { get; set; }
+    public IEnumerable<string> Genres { get; set; }
     public List<string> SelectedGenres { get; set; }
     protected override async Task OnInitializedAsync()
     {
@@ -70,7 +69,6 @@
     }
     public async Task ChooseItem(string genre)
     {
-        ShowGenres = "";
         if (!SelectedGenres.Contains(genre))
             SelectedGenres.Add(genre);
         else SelectedGenres.Remove(genre);
@@ -92,3 +90,4 @@
         else Films = AllFilms;
     }
 }
+

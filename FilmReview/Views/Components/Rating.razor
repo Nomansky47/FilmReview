@@ -42,7 +42,7 @@
             var CurrentSubComments = SubComments.Where(p => p.TrackingOn == comment.CommentID).ToList();
             @foreach (var subcomment in CurrentSubComments)
             {
-                @Comment(FilmsAndData.isAdmin, subcomment, Padding.Is5.FromStart.Is2.FromTop);
+                @Comment(FilmsAndData.isAdmin, subcomment, Padding.Is4.FromStart.Is2.FromTop);
                 @if (SubComments.FirstOrDefault(p => p.TrackingOn == subcomment.CommentID) != null)
                 {
                     var CurrentSubComments2 = SubComments.Where(p => p.TrackingOn == subcomment.CommentID).ToList();
