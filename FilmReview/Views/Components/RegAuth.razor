@@ -29,16 +29,6 @@
         </ModalFooter>
     </ModalContent>
 </Modal>
-<Snackbar TextSize="TextSize.Small" @ref="SnackBarNormal" Color="SnackbarColor.Light">
-    <SnackbarBody>
-        <Text TextColor="TextColor.Success">@Message</Text>
-        </SnackbarBody>
-    </Snackbar>
-<Snackbar TextSize="TextSize.Small"  @ref="SnackBarError" Color="SnackbarColor.Light">
-    <SnackbarBody>
-        <Text TextColor="TextColor.Danger">@Message</Text>
-    </SnackbarBody>
-</Snackbar>
     <Modal @ref="ModalReg">
         <ModalContent Centered>
         <ModalHeader>
@@ -81,7 +71,16 @@
         </ModalFooter>
     </ModalContent>
 </Modal>
-
+<Snackbar TextSize="TextSize.Small" @ref="SnackBarNormal" Color="SnackbarColor.Light">
+    <SnackbarBody>
+        <Text TextColor="TextColor.Success">@Message</Text>
+        </SnackbarBody>
+    </Snackbar>
+    <Snackbar TextSize="TextSize.Small" @ref="SnackBarError" Color="SnackbarColor.Light">
+        <SnackbarBody>
+            <Text TextColor="TextColor.Danger">@Message</Text>
+        </SnackbarBody>
+    </Snackbar>
     @code {
     private Modal ModalAuth;
     private Modal ModalReg;
@@ -95,9 +94,9 @@
     private string Message { get; set; } = "";
     private Snackbar SnackBarError;
     private Snackbar SnackBarNormal;
-    private Task ShowReg()
+    private async Task ShowReg()
     {
-        return ModalReg.Show();
+       await ModalReg.Show();
     }
 
     private async Task HideReg()
@@ -131,7 +130,7 @@
                         user.Surname = Surname;
                         user.Name = Name;
                         user.Patronymic = Patronymic;
-                        ModalReg.Hide();
+                        await ModalReg.Hide();
                         if (_context.Users.FirstOrDefault(p => p.UserLogin == user.UserLogin) == null)
                         {
                             user.isAdmin = false;
@@ -139,38 +138,38 @@
                             await _context.SaveChangesAsync();
                         }
                         Message = "Успешная регистрация";
-                        SnackBarNormal.Show();
-                        ModalAuth.Show();
+                        await SnackBarNormal.Show();
+                        await ModalAuth.Show();
                     }
                     else
                     {
 
                         Message = "Введенные пароли не совпадают!";
-                        SnackBarError.Show();
+                        await SnackBarError.Show();
                     }
                 }
                 else
                 {
                     Message = "Введенные данные слишком длинны!";
-                    SnackBarError.Show();
+                    await SnackBarError.Show();
                 }
             }
             else
             {
                 Message = "Пользователь с таким логином уже существует!";
-                SnackBarError.Show();
+                await SnackBarError.Show();
             }
         }
         else
         {
             Message = "Не все данные были введены!";
-            SnackBarError.Show();
+            await SnackBarError.Show();
         }
     }
 
-    private Task ShowAuth()
+    private async Task ShowAuth()
     {
-        return ModalAuth.Show();
+        await ModalAuth.Show();
     }
 
     private async Task HideAuth()
@@ -185,15 +184,15 @@
          var user = _context.Users.FirstOrDefault(p => p.UserLogin == Login && p.Password == Password);
          if (user != null&&Login.Length<50&&Password.Length<50)
          {
-             ModalAuth.Hide();
+             await ModalAuth.Hide();
              _navigationManager.NavigateTo("Auth/" + user.UserID + "/" + user.isAdmin, true);
-             Message = "Успешная авторизация!";
-             await SnackBarNormal.Show();
+            Message = "Успешная авторизация!";
+            await SnackBarNormal.Show();
          }
          else
          {
              Message="Неправильно введенный логин или пароль!";
-             SnackBarError.Show();
+             await SnackBarError.Show();
          }
      }
 }
