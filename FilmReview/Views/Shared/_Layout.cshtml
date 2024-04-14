@@ -6,6 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FilmReview</title>
+    <base href="~/" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
     <link href="_content/Blazorise/blazorise.css" rel="stylesheet" />
@@ -29,7 +30,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="HomePage">Главная страница</a>
                         </li>
-                        @if (HttpContextAccessor.HttpContext.isAdmin()==null)
+                        @if (HttpContextAccessor.HttpContext.isAdmin() == null)
                         {
                             <li class="nav-item">
                                 @(await BlazorPage.Render<FilmReview.Views.Components.RegAuth>(Html))
@@ -71,11 +72,10 @@
     </div>
     <footer class="border-top footer text-muted">
     </footer>
-    <script src="_framework/blazor.server.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="_framework/blazor.server.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
- <base href="~/" />

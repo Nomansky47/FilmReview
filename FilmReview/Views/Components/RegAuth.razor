@@ -3,10 +3,12 @@
 @using NomaniusMVC
 @inject MyContext _context
 @inject NavigationManager _navigationManager
+
 <Div Flex="Flex.JustifyContent.Around">
 <Button @onclick="ShowAuth">Авторизация</Button>
 <Button @onclick="ShowReg">Регистрация</Button>
 </Div>
+
 <Modal @ref="ModalAuth">
     <ModalContent Centered>
         <ModalHeader>
@@ -29,6 +31,7 @@
         </ModalFooter>
     </ModalContent>
 </Modal>
+
     <Modal @ref="ModalReg">
         <ModalContent Centered>
         <ModalHeader>
@@ -71,6 +74,7 @@
         </ModalFooter>
     </ModalContent>
 </Modal>
+
 <Snackbar TextSize="TextSize.Small" @ref="SnackBarNormal" Color="SnackbarColor.Light">
     <SnackbarBody>
         <Text TextColor="TextColor.Success">@Message</Text>
@@ -81,6 +85,7 @@
             <Text TextColor="TextColor.Danger">@Message</Text>
         </SnackbarBody>
     </Snackbar>
+
     @code {
     private Modal ModalAuth;
     private Modal ModalReg;
@@ -184,8 +189,8 @@
          var user = _context.Users.FirstOrDefault(p => p.UserLogin == Login && p.Password == Password);
          if (user != null&&Login.Length<50&&Password.Length<50)
          {
-             await ModalAuth.Hide();
-             _navigationManager.NavigateTo("Auth/" + user.UserID + "/" + user.isAdmin, true);
+            await ModalAuth.Hide();
+            _navigationManager.NavigateTo("Auth/" + user.UserID + "/" + user.isAdmin, true);
             Message = "Успешная авторизация!";
             await SnackBarNormal.Show();
          }
