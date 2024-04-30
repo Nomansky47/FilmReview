@@ -2,24 +2,32 @@
 @using FilmReview.Data
 @using Microsoft.EntityFrameworkCore
 @inject MyContext _context
-
+<Div Display="Display.Flex.Row">
+<Div>
 <img src="@FilmsAndData.Film.FilmImageLink" />
-<h1>@((float)FilmsAndData.Film.Summ / (float)FilmsAndData.Film.Total) </h1>
-
-@if (FilmsAndData.isAdmin != null)
-{
-    <Div class="display-6">
-        <Blazorise.Rating  TextColor="TextColor.Success" @bind-SelectedValue="@FilmsAndData.Rank" MaxValue="5" @onclick="RateFilm" />
-    </Div>
-}
-
+</Div>
+<Div Padding="Padding.Is3.FromStart">
 <Text TextSize="TextSize.Small">О фильме: @FilmsAndData.Film.About</Text>
-<br/>
-<Badge Color="Color.Success">Тэги: @FilmsAndData.Film.Tags</Badge>
-<Badge Color="Color.Success">Страна: @FilmsAndData.Film.Country</Badge>
-<Badge Color="Color.Success">Год: @FilmsAndData.Film.Year</Badge>
-<Badge Color="Color.Success">Длительность: @FilmsAndData.Film.Duration </Badge>
-<Badge Color="Color.Success">MPAA: @FilmsAndData.Film.MPAA </Badge>
+<br />
+    <Badge Color="Color.Success">Тэги: @FilmsAndData.Film.Tags</Badge>
+    <Badge Color="Color.Success">Страна: @FilmsAndData.Film.Country</Badge>
+    <Badge Color="Color.Success">Год: @FilmsAndData.Film.Year</Badge>
+    <Badge Color="Color.Success">Длительность: @FilmsAndData.Film.Duration </Badge>
+    <Badge Color="Color.Success">MPAA: @FilmsAndData.Film.MPAA </Badge>
+            @if (FilmsAndData.isAdmin != null)
+        {
+            <Div class="display-6">
+                <Text TextSize="TextSize.Large"> <Blazorise.Rating TextColor="TextColor.Success" @bind-SelectedValue="@FilmsAndData.Rank" MaxValue="5" @onclick="RateFilm" />  @(Math.Round((double)FilmsAndData.Film.Summ / (double)FilmsAndData.Film.Total, 1)) / 5 </Text>
+            </Div>
+                   
+            } else
+            {
+            <Div class="display-6">
+            <Blazorise.Text TextSize="TextSize.Large"> @(Math.Round((double)FilmsAndData.Film.Summ / (double)FilmsAndData.Film.Total, 1)) / 5</Blazorise.Text>
+            </Div>
+            }
+    </Div>
+    </Div>
 
 @if (FilmsAndData.isAdmin != null)
 {
@@ -114,8 +122,6 @@
             </CardTitle>
             <CardText>@subcomment.Text</CardText>
             <CardText><Button><Icon TextColor="TextColor.Success" Name="IconName.PlusCircle"></Icon></Button> @subcomment.Likes<Button><Icon TextColor="TextColor.Danger" Name="IconName.MinusCircle"></Icon></Button> @subcomment.Dislikes</CardText>
-            <Div TextAlignment="TextAlignment.End" Padding="Padding.Is1.FromEnd">
-            </Div>
         </Card>
     </Div>
     ;
