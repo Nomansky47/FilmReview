@@ -2,11 +2,21 @@
 @using FilmReview.Data
 @using Microsoft.EntityFrameworkCore
 @inject MyContext _context
+<Carousel Autoplay AutoRepeat>
+    @foreach(var image in Images)
+    {
+        <CarouselSlide Height="Height.Is75" >
+            <Image Source="@(image.ImageLink)" Width="Width.Is75" Height="Height.Is75" />
+    </CarouselSlide>
+    }
+</Carousel>
+<br />
 <Div Display="Display.Flex.Row">
 <Div>
 <img src="@FilmsAndData.Film.FilmImageLink" />
-</Div>
-<Div Padding="Padding.Is3.FromStart">
+    </Div>
+    <Div Padding="Padding.Is3.FromStart" Display="Display.Flex.Column" Flex="Flex.JustifyContent.Between">
+        <Div>
 <Text TextSize="TextSize.Small">О фильме: @FilmsAndData.Film.About</Text>
 <br />
     <Badge Color="Color.Success">Тэги: @FilmsAndData.Film.Tags</Badge>
@@ -14,31 +24,33 @@
     <Badge Color="Color.Success">Год: @FilmsAndData.Film.Year</Badge>
     <Badge Color="Color.Success">Длительность: @FilmsAndData.Film.Duration </Badge>
     <Badge Color="Color.Success">MPAA: @FilmsAndData.Film.MPAA </Badge>
+            </Div>
+            <Div class="display-6"> 
             @if (FilmsAndData.isAdmin != null)
         {
-            <Div class="display-6">
-                <Text TextSize="TextSize.Large"> <Blazorise.Rating TextColor="TextColor.Success" @bind-SelectedValue="@FilmsAndData.Rank" MaxValue="5" @onclick="RateFilm" />  @(Math.Round((double)FilmsAndData.Film.Summ / (double)FilmsAndData.Film.Total, 1)) / 5 </Text>
-            </Div>
+                <Blazorise.Text TextSize="TextSize.Large"> <Blazorise.Rating TextColor="TextColor.Success" @bind-SelectedValue="@FilmsAndData.Rank" MaxValue="5" @onclick="RateFilm" />  @(Math.Round((double)FilmsAndData.Film.Summ / (double)FilmsAndData.Film.Total, 1)) / 5 </Blazorise.Text>
                    
             } else
             {
-            <Div class="display-6">
             <Blazorise.Text TextSize="TextSize.Large"> @(Math.Round((double)FilmsAndData.Film.Summ / (double)FilmsAndData.Film.Total, 1)) / 5</Blazorise.Text>
-            </Div>
+          
             }
+              </Div>
     </Div>
     </Div>
 
 @if (FilmsAndData.isAdmin != null)
 {
+    <br />
     <Form>
          <FieldBody ColumnSize="ColumnSize.Is10">
              <TextEdit @bind-Text="TextComment" Placeholder="Комментарий..." />
          </FieldBody>
         <Button Color="Color.Primary" Clicked="WriteComment" Type="ButtonType.Submit" PreventDefaultOnSubmit>Отправить</Button>
  </Form>
-    <br />
 }
+
+ <br />
 
 @if(Comments.FirstOrDefault()!=null)
 {
@@ -92,6 +104,7 @@
     public List<Comments> Comments { get; set; } 
     public List<Comments> SubComments { get; set; }
     public IEnumerable<Users> Users { get; set; }
+    public IEnumerable<Images> Images { get; set; }
     int oldRank = 0;
     public bool pressed { get; set; }
     public string TextComment { get; set; } = "";
@@ -99,8 +112,8 @@
     public int? CommentingOn { get; set; }
     public int RowCounter=1;
 
-        protected override async Task OnInitializedAsync()
-        {
+    protected override async Task OnInitializedAsync()
+    {
         if (FilmsAndData.Rank != 0)
         {
             oldRank = FilmsAndData.Rank;
@@ -108,6 +121,7 @@
         }
         else pressed = false;
         var AllComments = _context.Comments.Where(p => p.FilmID == FilmsAndData.Film.FilmID).ToList();
+        Images = _context.Images.Where(p => p.FilmID == FilmsAndData.Film.FilmID).ToList();
         Comments = AllComments.Where(p => p.TrackingOn == null).ToList();
         SubComments = AllComments.Where(p => p.TrackingOn != null).ToList();
         Users = _context.Users.ToList();

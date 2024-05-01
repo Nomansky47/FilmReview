@@ -10,8 +10,6 @@ namespace FilmReview.Models
         [Required]
         public int FilmID { get; set; }
         [Required]
-        public string Name { get; set; }
-        [Required]
         public string ImageLink { get; set; }
         [ForeignKey("FilmID")]
         public virtual Films Films { get; set; }
