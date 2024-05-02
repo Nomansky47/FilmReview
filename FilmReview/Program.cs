@@ -2,9 +2,7 @@ using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using FilmReview.Data;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using NomaniusMVC;
 
 var builder = WebApplication.CreateBuilder(args);
