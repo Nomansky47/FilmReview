@@ -2,7 +2,12 @@
 @using FilmReview.Data
 @using Microsoft.EntityFrameworkCore
 @inject MyContext _context
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/kgAeKpAPOYk?si=yd4Is46q8dNTnjdH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+@if (VideoLink!="")
+{
+    <div class="text-center">
+    <iframe width="560" height="315" src="@VideoLink" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+}
 <br />
 <Div Display="Display.Flex.Row">
 <Div>
@@ -97,7 +102,7 @@
     public List<Comments> Comments { get; set; } 
     public List<Comments> SubComments { get; set; }
     public IEnumerable<Users> Users { get; set; }
-    public IEnumerable<Images> Images { get; set; }
+    public string VideoLink { get; set; } = "";
     int oldRank = 0;
     public bool pressed { get; set; }
     public string TextComment { get; set; } = "";
@@ -114,7 +119,8 @@
         }
         else pressed = false;
         var AllComments = _context.Comments.Where(p => p.FilmID == FilmsAndData.Film.FilmID).ToList();
-        Images = _context.Images.Where(p => p.FilmID == FilmsAndData.Film.FilmID).ToList();
+        var video = _context.Videos.FirstOrDefault(p => p.FilmID == FilmsAndData.Film.FilmID);
+        if (video != null) VideoLink = video.Link;
         Comments = AllComments.Where(p => p.TrackingOn == null).ToList();
         SubComments = AllComments.Where(p => p.TrackingOn != null).ToList();
         Users = _context.Users.ToList();

@@ -30,7 +30,7 @@ namespace FilmReview.Models
         [JsonIgnore]
         public virtual ICollection<Comments> Comments { get; set; }
         [JsonIgnore]
-        public virtual ICollection<Images> Images { get; set; }
+        public virtual ICollection<Videos> Videos { get; set; }
         [JsonIgnore]
         public virtual ICollection<Reviews> Reviews { get; set; }
     }
