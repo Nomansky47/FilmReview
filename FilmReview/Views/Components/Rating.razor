@@ -2,57 +2,61 @@
 @using FilmReview.Data
 @using Microsoft.EntityFrameworkCore
 @inject MyContext _context
-@if (VideoLink!="")
-{
-    <div class="text-center">
-    <iframe width="560" height="315" src="@VideoLink" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
-}
-<br />
 <Div Display="Display.Flex.Row">
 <Div>
 <img src="@FilmsAndData.Film.FilmImageLink" />
     </Div>
-    <Div Padding="Padding.Is3.FromStart" Display="Display.Flex.Column" Flex="Flex.JustifyContent.Between">
-        <Div>
-<Text TextSize="TextSize.Small">О фильме: @FilmsAndData.Film.About</Text>
-<br />
-    <Badge Color="Color.Success">Тэги: @FilmsAndData.Film.Tags</Badge>
-    <Badge Color="Color.Success">Страна: @FilmsAndData.Film.Country</Badge>
-    <Badge Color="Color.Success">Год: @FilmsAndData.Film.Year</Badge>
-    <Badge Color="Color.Success">Длительность: @FilmsAndData.Film.Duration </Badge>
-    <Badge Color="Color.Success">MPAA: @FilmsAndData.Film.MPAA </Badge>
+    @if (VideoLink != "")
+    {
+        <Div Padding="Padding.Is5.FromStart">
+        <iframe width="560" height="315" src="@VideoLink" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </Div>
+    }
+    </Div>
+<Div Display="Display.Flex.Column" Padding="Padding.Is2.FromTop" Flex="Flex.JustifyContent.Between">
+    <Div>
+        <Text TextSize="TextSize.Small">О фильме: @FilmsAndData.Film.About</Text>
+            <Div Padding="Padding.Is2.FromTop">
+            <Badge Color="Color.Success">Тэги: @FilmsAndData.Film.Tags</Badge>
+            <Badge Color="Color.Success">Страна: @FilmsAndData.Film.Country</Badge>
+            <Badge Color="Color.Success">Год: @FilmsAndData.Film.Year</Badge>
+            <Badge Color="Color.Success">Длительность: @FilmsAndData.Film.Duration </Badge>
+            <Badge Color="Color.Success">MPAA: @FilmsAndData.Film.MPAA </Badge>
             </Div>
-            <Div class="display-6"> 
+        </Div>
+        <Div Class="display-6" Padding="Padding.Is2.FromTop" >
             @if (FilmsAndData.isAdmin != null)
         {
-                <Blazorise.Text TextSize="TextSize.Large"> <Blazorise.Rating TextColor="TextColor.Success" @bind-SelectedValue="@FilmsAndData.Rank" MaxValue="5" @onclick="RateFilm" />  @(Math.Round((double)FilmsAndData.Film.Summ / (double)FilmsAndData.Film.Total, 1)) / 5 </Blazorise.Text>
-                   
-            } else
-            {
-            <Blazorise.Text TextSize="TextSize.Large"> @(Math.Round((double)FilmsAndData.Film.Summ / (double)FilmsAndData.Film.Total, 1)) / 5</Blazorise.Text>
-          
-            }
-              </Div>
-    </Div>
-    </Div>
+            <Blazorise.Text TextSize="TextSize.Large"> <Blazorise.Rating TextColor="TextColor.Success" @bind-SelectedValue="@FilmsAndData.Rank" MaxValue="5" @onclick="RateFilm" />  @(Math.Round((double)FilmsAndData.Film.Summ / (double)FilmsAndData.Film.Total, 1)) / 5 </Blazorise.Text>
 
+        }
+        else
+        {
+            <Blazorise.Text TextSize="TextSize.Large"> Рейтинг: @(Math.Round((double)FilmsAndData.Film.Summ / (double)FilmsAndData.Film.Total, 1)) / 5</Blazorise.Text>
+
+        }
+    </Div>
+</Div>
 @if (FilmsAndData.isAdmin != null)
 {
-    <br />
-    <Form>
-         <FieldBody ColumnSize="ColumnSize.Is10">
+    <Div Padding="Padding.Is2.FromTop">
+    <Form >
+            
+        <FieldBody ColumnSize="ColumnSize.Is10">
              <TextEdit @bind-Text="TextComment" Placeholder="Комментарий..." />
          </FieldBody>
+            <Div Padding="Padding.Is2.FromTop">
         <Button Color="Color.Primary" Clicked="WriteComment" Type="ButtonType.Submit" PreventDefaultOnSubmit>Отправить</Button>
- </Form>
+         </Div>
+    </Form>
+ </Div>
 }
 
- <br />
 
 @if(Comments.FirstOrDefault()!=null)
 {
-    foreach (var comment in Comments)
+    <Div Padding="Padding.Is2.FromTop">
+    @foreach (var comment in Comments)
     {
         @Comment(FilmsAndData.isAdmin,comment,Padding.Is2.FromTop);
         @if (SubComments.FirstOrDefault(p=>p.TrackingOn==comment.CommentID)!=null)
@@ -93,6 +97,7 @@
             }
         }
 }
+    </Div>
 }
 
 @code {
