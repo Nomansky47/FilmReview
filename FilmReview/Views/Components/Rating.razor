@@ -2,6 +2,7 @@
 @using FilmReview.Data
 @using Microsoft.EntityFrameworkCore
 @inject MyContext _context
+
 <Div Display="Display.Flex.Row">
 <Div>
 <img src="@FilmsAndData.Film.FilmImageLink" />
@@ -17,7 +18,7 @@
     <Div>
         <Text TextSize="TextSize.Small">О фильме: @FilmsAndData.Film.About</Text>
             <Div Padding="Padding.Is2.FromTop">
-            <Badge Color="Color.Success">Тэги: @FilmsAndData.Film.Tags</Badge>
+            <Badge Color="Color.Success">Тэги: @FilmsAndData.Film.Genres</Badge>
             <Badge Color="Color.Success">Страна: @FilmsAndData.Film.Country</Badge>
             <Badge Color="Color.Success">Год: @FilmsAndData.Film.Year</Badge>
             <Badge Color="Color.Success">Длительность: @FilmsAndData.Film.Duration </Badge>
@@ -199,7 +200,7 @@
                     <Icon TextColor="TextColor.Danger" Name="IconName.MinusCircle"></Icon>
         </Button> @comment.Dislikes</CardText>
         <Div TextAlignment="TextAlignment.End" Padding="Padding.Is1.FromEnd">
-            <Button Color="Color.Success">
+            <Button Color="Color.Success"  Clicked="()=>CommentEnable(comment.CommentID)">
                 Ответить
                 <Icon Name="IconName.ArrowDown"></Icon>
             </Button>

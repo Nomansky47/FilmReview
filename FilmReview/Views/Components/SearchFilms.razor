@@ -3,19 +3,29 @@
 @using Microsoft.AspNetCore.Mvc
 @using NomaniusMVC
 @inject MyContext _context
+
+<Div Display="Display.Flex.Row">
+    <Div Padding="Padding.Is1.FromStart">
+        <TextEdit Text="@FilmName"  TextChanged="@FilmNameChanged" Placeholder="Название фильма" />
+    </Div>
+    <Div Padding="Padding.Is1.FromStart">
 <Dropdown>
     <DropdownToggle Color="Color.Success">
-        Выберите тэги для поиска
+        Жанры
     </DropdownToggle>
     <DropdownMenu>
         @foreach (var genre in Genres)
         {
-            <DropdownItem ShowCheckbox CheckedChanged="@(()=>ChooseItem(genre))">@genre</DropdownItem>
+                    <DropdownItem ShowCheckbox CheckedChanged="@(()=>ChooseGenre(genre))">@genre</DropdownItem>
         }
     </DropdownMenu>
 </Dropdown>
-<br />
-<div class="container">
+    </Div>
+    <Div Padding="Padding.Is1.FromStart">
+        <SelectList SelectedValueChanged="ChooseCountry" TItem="string" Data="Countries" TextField="(item)=>item" ValueField="(item)=>item" TValue="string" DefaultItemText="Страна" DefaultItemValue="@("Любая страна")" />
+    </Div>
+</Div>
+<Div Class="container" Padding="Padding.Is1.FromTop" >
     @if (Films.FirstOrDefault() == null)
     {
         <Text>Таких фильмов нет</Text>
@@ -35,7 +45,7 @@
                             <img style="align-self:center;" src="@Films[j].FilmImageLink" alt="@error" width="190" height="250" />
                             <div class="card-body">
                                 <h5 class="card-title">@Films[j].FilmName <Icon TextColor="TextColor.Success" Name="IconName.Star"></Icon> @Rating</h5>
-                                <p class="card-text">@Films[j].Tags</p>
+                                <p class="card-text">@Films[j].Genres</p>
                                 <a href="Home/FilmDetails/@Films[j].FilmID" class="btn btn-success">Подробнее</a>
                             </div>
                         </div>
@@ -44,17 +54,25 @@
             </div>
         }
     }
-</div>
+</Div>
 
 @code {
+    public string FilmName;
     public string error = "Картинка фильма";
     public List<Films> Films { get; set; }
     public IEnumerable<string> Genres { get; set; }
+    public IEnumerable<string> Countries { get; set; }
     public List<string> SelectedGenres { get; set; }
+    public string SelectedCountry { get; set; } = "";
+
     protected override async Task OnInitializedAsync()
     {
-        Films = _context.Films.ToList();
+        var allFilms = _context.Films.ToList();
+        Films = allFilms;
         SelectedGenres = new List<string>();
+        var tempCountries = new HashSet<string>();
+        allFilms.ForEach(p => tempCountries.Add(p.Country));
+        Countries = tempCountries;
         Genres = new HashSet<string>
         {
             "драма",
@@ -67,27 +85,100 @@
             "мелодрама"
         };
     }
-    public async Task ChooseItem(string genre)
+
+    public void RefreshFilms(IEnumerable<Films> AllFilms)
+    {
+        if (SelectedGenres.Count > 0 && SelectedCountry != "Любая страна")
+        {
+            var TempFilms = new HashSet<Films>();
+            var ThisFilms = AllFilms;
+            bool contains = false;
+            foreach (var film in ThisFilms.ToList())
+            {
+                foreach (var genre in SelectedGenres)
+                {
+                    if (film.Genres.Contains(genre)&&film.Country==SelectedCountry) contains = true;
+                    else
+                    {
+                        contains = false;
+                        break;
+                    }
+                }
+                if (contains) TempFilms.Add(film);
+                contains = false;
+            }
+            Films = TempFilms.ToList();
+        } else 
+        if (SelectedGenres.Count > 0)
+        {
+            var TempFilms = new HashSet<Films>();
+            var ThisFilms = AllFilms;
+            bool contains = false;
+            foreach (var film in ThisFilms.ToList())
+            {
+                foreach(var genre in SelectedGenres)
+                {
+                    if (film.Genres.Contains(genre)) contains = true;
+                    else
+                    {
+                        contains = false;
+                        break;
+                    }
+                }
+                if (contains) TempFilms.Add(film);
+                contains = false;
+            }
+            Films = TempFilms.ToList();
+        } else 
+        if (SelectedCountry != "Любая страна")
+        {
+            var TempFilms = new HashSet<Films>();
+            var ThisFilms = AllFilms;
+            foreach (var film in ThisFilms.ToList())
+            {
+                if (film.Country == SelectedCountry) TempFilms.Add(film);
+            }
+            Films = TempFilms.ToList();
+        } else 
+        {
+            Films = AllFilms.ToList();
+        }
+    }
+
+    public void FilmChanging()
+    {
+        if (!string.IsNullOrWhiteSpace(FilmName))
+        {
+            var allFilms = _context.Films.ToList();
+            if (FilmName != "" && FilmName != null)
+                allFilms = allFilms.Where(p => p.FilmName.ToLower().Contains(FilmName.ToLower())).ToList();
+            Films = allFilms;
+        }
+        else
+        {
+            Films = _context.Films.ToList();
+        }
+        RefreshFilms(Films);
+    }
+
+    public async Task ChooseCountry(string country)
+    {
+        SelectedCountry = country;
+        FilmChanging();
+    }
+
+    public async Task ChooseGenre(string genre)
     {
         if (!SelectedGenres.Contains(genre))
             SelectedGenres.Add(genre);
         else SelectedGenres.Remove(genre);
-        var AllFilms = _context.Films.ToList();
-        if (SelectedGenres.FirstOrDefault() != null)
-        {
-            var TempFilms = new HashSet<Films>();
-            foreach (var tag in SelectedGenres)
-            {
-                foreach (var film in AllFilms.Where(p => p.Tags.Contains(tag)).ToList())
-                {
-                    TempFilms.Add(film);
-                }
+        FilmChanging();
+    }
 
-            }
-            Films = TempFilms.ToList();
-
-        }
-        else Films = AllFilms;
+    public async Task FilmNameChanged(string value)
+    {
+        FilmName=value;
+        FilmChanging();
     }
 }
 
