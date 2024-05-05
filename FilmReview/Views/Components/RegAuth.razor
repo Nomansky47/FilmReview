@@ -1,6 +1,10 @@
 ﻿@using FilmReview.Data
 @using FilmReview.Models
 @using NomaniusMVC
+@using System
+@using System.IO
+@using System.Security.Cryptography
+@using System.Text
 @inject MyContext _context
 @inject NavigationManager _navigationManager
 
@@ -41,15 +45,15 @@
         <ModalBody>
             <Field>
                 <FieldLabel>Никнейм</FieldLabel>
-                <TextEdit @bind-Text="NickName" Placeholder="Придумайте никнейм..." />
+                <TextEdit @bind-Text="NickName" Placeholder="Введите никнейм..." />
             </Field>
             <Field>
                 <FieldLabel>Логин</FieldLabel>
-                <TextEdit @bind-Text="Login" Placeholder="Придумайте логин..." />
+                <TextEdit @bind-Text="Login" Placeholder="Введите логин..." />
             </Field>
             <Field>
                 <FieldLabel>Пароль</FieldLabel>
-                <TextEdit Role="TextRole.Password" @bind-Text="Password" Placeholder="Придумайте пароль..." />
+                <TextEdit Role="TextRole.Password" @bind-Text="Password" Placeholder="Введите пароль..." />
             </Field>
             <Field>
                 <FieldLabel>Пароль</FieldLabel>
@@ -99,9 +103,10 @@
     private string Message { get; set; } = "";
     private Snackbar SnackBarError;
     private Snackbar SnackBarNormal;
+
     private async Task ShowReg()
     {
-       await ModalReg.Show();
+        await ModalReg.Show();
     }
 
     private async Task HideReg()
@@ -131,11 +136,13 @@
                         Users user = new Users();
                         user.NickName = NickName;
                         user.UserLogin = Login;
-                        user.Password = Password;
                         user.Surname = Surname;
                         user.Name = Name;
                         user.Patronymic = Patronymic;
                         await ModalReg.Hide();
+                        byte[] passwordBytes = Encoding.UTF8.GetBytes(Password);
+                        user.Password = Convert.ToBase64String(passwordBytes);
+
                         if (_context.Users.FirstOrDefault(p => p.UserLogin == user.UserLogin) == null)
                         {
                             user.isAdmin = false;
@@ -186,7 +193,9 @@
 
    private async Task Authorize()
      {
-         var user = _context.Users.FirstOrDefault(p => p.UserLogin == Login && p.Password == Password);
+        byte[] passwordBytes = Encoding.UTF8.GetBytes(Password);
+        var truePassword = Convert.ToBase64String(passwordBytes);
+         var user = _context.Users.FirstOrDefault(p => p.UserLogin == Login && p.Password == truePassword);
          if (user != null&&Login.Length<50&&Password.Length<50)
          {
             await ModalAuth.Hide();

@@ -16,16 +16,16 @@
     <DropdownMenu>
         @foreach (var genre in Genres)
         {
-                    <DropdownItem ShowCheckbox CheckedChanged="@(()=>ChooseGenre(genre))">@genre</DropdownItem>
+            <DropdownItem ShowCheckbox CheckedChanged="@(()=>ChooseGenre(genre))">@genre</DropdownItem>
         }
     </DropdownMenu>
 </Dropdown>
     </Div>
     <Div Padding="Padding.Is1.FromStart">
-        <SelectList SelectedValueChanged="ChooseCountry" TItem="string" Data="Countries" TextField="(item)=>item" ValueField="(item)=>item" TValue="string" DefaultItemText="Страна" DefaultItemValue="@("Любая страна")" />
+        <SelectList SelectedValueChanged="ChooseCountry" TItem="string" Data="Countries" TextField="(item)=>item" ValueField="(item)=>item" TValue="string" DefaultItemText="Любая страна" DefaultItemValue="@("Любая страна")" />
     </Div>
 </Div>
-<Div Class="container" Padding="Padding.Is1.FromTop" >
+<Div Class="container" Padding="Padding.Is2.FromTop" >
     @if (Films.FirstOrDefault() == null)
     {
         <Text>Таких фильмов нет</Text>
@@ -62,14 +62,14 @@
     public List<Films> Films { get; set; }
     public IEnumerable<string> Genres { get; set; }
     public IEnumerable<string> Countries { get; set; }
-    public List<string> SelectedGenres { get; set; }
-    public string SelectedCountry { get; set; } = "";
+    public HashSet<string> SelectedGenres { get; set; }
+    public string SelectedCountry { get; set; } = "Любая страна";
 
     protected override async Task OnInitializedAsync()
     {
         var allFilms = _context.Films.ToList();
         Films = allFilms;
-        SelectedGenres = new List<string>();
+        SelectedGenres = new HashSet<string>();
         var tempCountries = new HashSet<string>();
         allFilms.ForEach(p => tempCountries.Add(p.Country));
         Countries = tempCountries;
@@ -150,7 +150,7 @@
         if (!string.IsNullOrWhiteSpace(FilmName))
         {
             var allFilms = _context.Films.ToList();
-            if (FilmName != "" && FilmName != null)
+            if (!string.IsNullOrWhiteSpace(FilmName))
                 allFilms = allFilms.Where(p => p.FilmName.ToLower().Contains(FilmName.ToLower())).ToList();
             Films = allFilms;
         }
