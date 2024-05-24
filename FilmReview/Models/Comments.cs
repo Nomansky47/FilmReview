@@ -14,8 +14,6 @@ namespace FilmReview.Models
         public int FilmID { get; set; }
 
         [Required]
-        public int Row { get; set; } = 0;
-        [Required]
         public string Text { get; set; }
         [Required]
         public int Likes { get; set; } = 0;

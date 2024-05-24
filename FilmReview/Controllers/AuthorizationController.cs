@@ -3,7 +3,6 @@ using FilmReview.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NomaniusMVC;
-using NuGet.Protocol.Plugins;
 using System.Net;
 
 namespace FilmReview.Controllers

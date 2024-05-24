@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,7 +49,7 @@ namespace FilmReview.Controllers
         // GET: Comments/Create
         public IActionResult Create()
         {
-            ViewData["FilmID"] = new SelectList(_context.Films, "FilmID", "Country");
+            ViewData["FilmID"] = new SelectList(_context.Films, "FilmID", "About");
             ViewData["UserID"] = new SelectList(_context.Users, "UserID", "Name");
             return View();
         }
@@ -59,7 +59,7 @@ namespace FilmReview.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CommentID,UserID,FilmID,Row,Text,Likes,Dislikes,TrackingOn")] Comments comments)
+        public async Task<IActionResult> Create([Bind("CommentID,UserID,FilmID,Text,Likes,Dislikes,TrackingOn")] Comments comments)
         {
                 _context.Add(comments);
                 await _context.SaveChangesAsync();
@@ -79,7 +79,7 @@ namespace FilmReview.Controllers
             {
                 return NotFound();
             }
-            ViewData["FilmID"] = new SelectList(_context.Films, "FilmID", "Country", comments.FilmID);
+            ViewData["FilmID"] = new SelectList(_context.Films, "FilmID", "About", comments.FilmID);
             ViewData["UserID"] = new SelectList(_context.Users, "UserID", "Name", comments.UserID);
             return View(comments);
         }
@@ -89,7 +89,7 @@ namespace FilmReview.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CommentID,UserID,FilmID,Row,Text,Likes,Dislikes,TrackingOn")] Comments comments)
+        public async Task<IActionResult> Edit(int id, [Bind("CommentID,UserID,FilmID,Text,Likes,Dislikes,TrackingOn")] Comments comments)
         {
             if (id != comments.CommentID)
             {

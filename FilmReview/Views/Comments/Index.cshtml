@@ -13,18 +13,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CommentID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FilmID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Row)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Text)
             </th>
             <th>
@@ -32,6 +20,12 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Dislikes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Users)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Films)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TrackingOn)
@@ -42,18 +36,6 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CommentID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Users.UserID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Films.FilmID)
-                </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Row)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Text)
             </td>
@@ -64,7 +46,13 @@
                 @Html.DisplayFor(modelItem => item.Dislikes)
             </td>
             <td>
-                    @Html.DisplayFor(modelItem => item.TrackingOn)
+                @Html.DisplayFor(modelItem => item.Users.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Films.About)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrackingOn)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CommentID">Edit</a> |

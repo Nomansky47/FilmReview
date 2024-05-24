@@ -3,7 +3,7 @@
 @using Microsoft.EntityFrameworkCore
 @inject MyContext _context
 
-<Div Display="Display.Flex.Row">
+<Div Display="Display.Flex.Row"> 
 <Div>
 <img src="@FilmsAndData.Film.FilmImageLink" />
     </Div>
@@ -47,7 +47,7 @@
              <TextEdit @bind-Text="TextComment" Placeholder="Комментарий..." />
          </FieldBody>
             <Div Padding="Padding.Is2.FromTop">
-        <Button Color="Color.Primary" Clicked="WriteComment" Type="ButtonType.Submit" PreventDefaultOnSubmit>Отправить</Button>
+        <Button Color="Color.Success" Clicked="WriteComment" Type="ButtonType.Submit" PreventDefaultOnSubmit>Отправить</Button>
          </Div>
     </Form>
  </Div>
@@ -125,6 +125,7 @@
         }
         else pressed = false;
         var AllComments = _context.Comments.Where(p => p.FilmID == FilmsAndData.Film.FilmID).ToList();
+        AllComments.Reverse();
         var video = _context.Videos.FirstOrDefault(p => p.FilmID == FilmsAndData.Film.FilmID);
         if (video != null) VideoLink = video.Link;
         Comments = AllComments.Where(p => p.TrackingOn == null).ToList();
@@ -135,8 +136,8 @@
     private RenderFragment LastComment(Comments subcomment)
     {
         return@<Div Padding="Padding.Is5.FromStart">
-        <Card Background="Background.Light" Style="width:600px">
-            <CardTitle Size="3">
+        <Card Background="Background.Light" Class="rounded shadow" Style="width:600px">
+            <CardTitle Size="4">
                 @Users.FirstOrDefault(p => p.UserID == subcomment.UserID).NickName
             </CardTitle>
             <CardText>@subcomment.Text</CardText>
@@ -148,36 +149,43 @@
 
     private RenderFragment Comment(bool? isAdmin, Comments comment, IFluentSpacingOnBreakpointWithSideAndSize padding)
     {
+        var CardTitleSize = 4;
+        var ClassRounded = "rounded shadow";
+        var StyleWidth = "width:600px";
+        var AnswerStyle = "padding-left:374px";
         if (isAdmin != null)
         {
             if (CommentingOn == comment.CommentID)
             {
                 return
 @<Div Padding="@padding">
-        <Card Background="@Background.Light" Style="width:600px">
-        <CardTitle Size="3">
-            @Users.FirstOrDefault(p => p.UserID == comment.UserID).NickName
+        <Card Background="@Background.Light" Class="@ClassRounded" Style="@StyleWidth">
+        <CardTitle Size="CardTitleSize">
+                <Div Padding="Padding.Is3.FromStart"> @Users.FirstOrDefault(p => p.UserID == comment.UserID).NickName</Div>
         </CardTitle>
-        <CardText>@comment.Text</CardText>
+            <CardText Padding="Padding.Is3.FromStart">@comment.Text</CardText>
+            <Div Display="Display.Flex.Row">
         <CardText>
                 <Button Clicked="()=>Like(comment.CommentID)">
         <Icon TextColor="TextColor.Success" Name="IconName.PlusCircle"></Icon>
         </Button> 
         @comment.Likes<Button Clicked="()=>Dislike(comment.CommentID)">
         <Icon TextColor="TextColor.Danger" Name="IconName.MinusCircle"></Icon>
-        </Button> @comment.Dislikes</CardText>
-        <Div TextAlignment="TextAlignment.End" Padding="Padding.Is1.FromEnd">
+        </Button> @comment.Dislikes
+        </CardText>
+                <Div TextAlignment="TextAlignment.End" Style="@AnswerStyle">
             <Button Color="Color.Success" Clicked="()=>CommentEnable(comment.CommentID)">
                 Ответить
                 <Icon Name="IconName.ArrowDown"></Icon>
             </Button>
         </Div>
+            </Div>
     </Card>
                 <Form>
-                    <FieldBody ColumnSize="ColumnSize.Is10">
+            <FieldBody ColumnSize="ColumnSize.Is10" Style="@StyleWidth">
                         <TextEdit @bind-Text="TextSubComment" Placeholder="Комментарий к комментарию..." />
                     </FieldBody>
-                    <Button Color="Color.Primary" Clicked="()=>WriteCommentOnComment(1)" Type="ButtonType.Submit"
+                    <Button Color="Color.Success" Clicked="WriteCommentOnComment" Type="ButtonType.Submit"
                                 PreventDefaultOnSubmit>
                      Отправить
                  </Button>
@@ -187,35 +195,38 @@
             else
                 return
 @<Div Padding="@padding">
-    <Card Background="Background.Light" Style="width:600px">
-        <CardTitle Size="3">
-            @Users.FirstOrDefault(p => p.UserID == comment.UserID).NickName
+        <Card Background="Background.Light" Class="@ClassRounded" Style="@StyleWidth">
+            <CardTitle Size="CardTitleSize">
+             <Div Padding="Padding.Is3.FromStart">@Users.FirstOrDefault(p => p.UserID == comment.UserID).NickName</Div>
         </CardTitle>
-        <CardText>@comment.Text</CardText>
-            <CardText>
+            <CardText Padding="Padding.Is3.FromStart">@comment.Text</CardText>
+            <Div Display="Display.Flex.Row">
+            <CardText >
                 <Button Clicked="()=>Like(comment.CommentID)">
         <Icon TextColor="TextColor.Success" Name="IconName.PlusCircle"></Icon></Button>
         @comment.Likes
                 <Button Clicked="()=>Dislike(comment.CommentID)">
                     <Icon TextColor="TextColor.Danger" Name="IconName.MinusCircle"></Icon>
-        </Button> @comment.Dislikes</CardText>
-        <Div TextAlignment="TextAlignment.End" Padding="Padding.Is1.FromEnd">
-            <Button Color="Color.Success"  Clicked="()=>CommentEnable(comment.CommentID)">
-                Ответить
-                <Icon Name="IconName.ArrowDown"></Icon>
-            </Button>
-        </Div>
+        </Button> @comment.Dislikes
+        </CardText>
+                <Div TextAlignment="TextAlignment.End" Style="@AnswerStyle">
+                    <Button  Color="Color.Success" Clicked="()=>CommentEnable(comment.CommentID)">
+                        Ответить
+                        <Icon Name="IconName.ArrowDown"></Icon>
+                    </Button>
+                </Div>
+            </Div>
     </Card>
     </Div>;
         }
         else
             return 
             @<Div Padding="@padding">
-            <Card Background="Background.Light" Style="width:600px">
-                <CardTitle Size="3">
-                    @Users.FirstOrDefault(p => p.UserID == comment.UserID).NickName
+        <Card Background="Background.Light" Class="@ClassRounded" Style="@StyleWidth">
+            <CardTitle Size="CardTitleSize">
+                    <Div Padding="Padding.Is3.FromStart"> @Users.FirstOrDefault(p => p.UserID == comment.UserID).NickName </Div>
                 </CardTitle>
-                <CardText>@comment.Text</CardText>
+            <CardText Padding="Padding.Is3.FromStart">@comment.Text</CardText>
                 <CardText><Button><Icon TextColor="TextColor.Success" Name="IconName.PlusCircle"></Icon></Button> @comment.Likes<Button><Icon TextColor="TextColor.Danger" Name="IconName.MinusCircle"></Icon></Button> @comment.Dislikes</CardText>
             </Card>
             </Div>
@@ -291,13 +302,14 @@
         {
             Comments Comment = new Comments();
             Comment.Text = TextComment;
-            Comment.Row = 0;
             Comment.Likes = 0;
             Comment.Dislikes = 0;
             Comment.FilmID=FilmsAndData.Film.FilmID;
             Comment.UserID =(int)FilmsAndData.currentUserID;
             TextComment = "";
+            Comments.Reverse();
             Comments.Add(Comment);
+            Comments.Reverse();
             _context.Comments.Add(Comment);
             await _context.SaveChangesAsync();
         }
@@ -305,16 +317,17 @@
 
     private async Task CommentEnable(int CommentID)
     {
-        CommentingOn = CommentID;
+        if (CommentingOn != CommentID)
+            CommentingOn = CommentID;
+        else CommentingOn = null;
     }
 
-    private async Task WriteCommentOnComment(int row)
+    private async Task WriteCommentOnComment()
     {
         if (TextSubComment != "")
         {
             Comments Comment = new Comments();
             Comment.Text = TextSubComment;
-            Comment.Row = row;
             Comment.Likes = 0;
             Comment.Dislikes = 0;
             Comment.FilmID = FilmsAndData.Film.FilmID;
@@ -323,7 +336,9 @@
             TextSubComment = "";
             _context.Comments.Add(Comment);
             await _context.SaveChangesAsync();
+            SubComments.Reverse();
             SubComments.Add(Comment);
+            SubComments.Reverse();
         }
     }
 }

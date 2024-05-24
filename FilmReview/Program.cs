@@ -1,6 +1,7 @@
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using Blazorise.Tests.bUnit;
 using FilmReview.Data;
 using Microsoft.EntityFrameworkCore;
 using NomaniusMVC;
@@ -11,7 +12,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddBlazorise(options =>{options.Immediate = true;}).AddBootstrapProviders().AddFontAwesomeIcons();
+builder.Services.AddBlazorise(options =>{options.Immediate = true;}).AddBlazoriseTests().AddBootstrapProviders().AddEmptyIconProvider().AddFontAwesomeIcons();
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 //DbInitializer.AddMySqlContext<MyContext>(builder.Services, connectionString);
 DbInitializer.AddSqlServerContext<MyContext>(builder.Services, connectionString);
@@ -20,7 +21,6 @@ DbInitializer.CreateDbIfNotExists<MyContext>(app);
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 app.UseHttpsRedirection();
