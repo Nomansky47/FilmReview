@@ -9,22 +9,35 @@
         <TextEdit Text="@FilmName"  TextChanged="@FilmNameChanged" Placeholder="Название фильма" />
     </Div>
     <Div Padding="Padding.Is1.FromStart">
-<Dropdown>
-    <DropdownToggle Color="Color.Success">
-        Жанры
-    </DropdownToggle>
-    <DropdownMenu>
-        @foreach (var genre in Genres)
-        {
-            <DropdownItem ShowCheckbox CheckedChanged="@(()=>ChooseGenre(genre))">@genre</DropdownItem>
-        }
-    </DropdownMenu>
-</Dropdown>
+        <Dropdown>
+            <DropdownToggle Color="Color.Success">
+                Жанры
+            </DropdownToggle>
+            <DropdownMenu>
+                @foreach (var genre in Genres)
+                {
+                    <DropdownItem ShowCheckbox CheckedChanged="@(()=>ChooseGenre(genre))">@genre</DropdownItem>
+                }
+            </DropdownMenu>
+        </Dropdown>
     </Div>
     <Div Padding="Padding.Is1.FromStart">
-        <SelectList SelectedValueChanged="ChooseCountry" TItem="string" Data="Countries" TextField="(item)=>item" ValueField="(item)=>item" TValue="string" DefaultItemText="Любая страна" DefaultItemValue="@("Любая страна")" />
+        <SelectList SelectedValueChanged="ChooseCountry" TItem="string" Data="Countries" TextField="(item)=>item" ValueField="(item)=>item" TValue="string" DefaultItemText="Cтрана" DefaultItemValue="@("")" />
+    </Div>
+    <Div Padding="Padding.Is1.FromStart">
+        <SelectList  SelectedValueChanged="ChooseMPAA" TItem="string" Data="MPAAList" TextField="(item)=>item" ValueField="(item)=>item" TValue="string" DefaultItemText="MPAA" DefaultItemValue="@("")" />
+    </Div>
+    <Div Padding="Padding.Is1.FromStart">
+        <SelectList SelectedValueChanged="ChooseDuration" TItem="string" Data="DurationList" TextField="(item)=>item" ValueField="(item)=>item" TValue="string" DefaultItemText="Длительность" DefaultItemValue="@("")" />
+    </Div>
+    <Div Padding="Padding.Is1.FromStart">
+        <SelectList SelectedValueChanged="ChooseYear" TItem="int" Data="YearList" TextField="@((item)=>(item.ToString()+" и более"))" ValueField="(item)=>item" TValue="int" DefaultItemText="Год выпуска" DefaultItemValue="@(-1)" />
+    </Div>
+    <Div Padding="Padding.Is1.FromStart">
+        <SelectList SelectedValueChanged="ChooseRating" TItem="int" Data="RatingList" TextField="@((item)=>(item.ToString()+" и более"))" ValueField="(item)=>item" TValue="int" DefaultItemText="Рейтинг" DefaultItemValue="@(-1)" />
     </Div>
 </Div>
+
 <Div Class="container" Padding="Padding.Is2.FromTop" >
     @if (Films.FirstOrDefault() == null)
     {
@@ -62,8 +75,16 @@
     public List<Films> Films { get; set; }
     public IEnumerable<string> Genres { get; set; }
     public IEnumerable<string> Countries { get; set; }
+    public IEnumerable<string> MPAAList { get; set; }
+    public IEnumerable<string> DurationList { get; set; }
+    public IEnumerable<int> YearList { get; set; }
+    public IEnumerable<int> RatingList { get; set; }
     public HashSet<string> SelectedGenres { get; set; }
-    public string SelectedCountry { get; set; } = "Любая страна";
+    public string SelectedCountry { get; set; } = "";
+    public string SelectedMPAA { get; set; } = "";
+    public string SelectedDuration { get; set; } = "";
+    public int SelectedRating { get; set; } = -1;
+    public int SelectedYear { get; set; } = -1;
 
     protected override async Task OnInitializedAsync()
     {
@@ -71,8 +92,23 @@
         Films = allFilms;
         SelectedGenres = new HashSet<string>();
         var tempCountries = new HashSet<string>();
-        allFilms.ForEach(p => tempCountries.Add(p.Country));
+        var tempMPAAList = new HashSet<string>();
+        var tempDurationList = new HashSet<string>();
+        var tempYearsList = new HashSet<int>();
+        allFilms.ForEach(p =>
+            { tempCountries.Add(p.Country);
+                tempMPAAList.Add(p.MPAA);
+                tempYearsList.Add(p.Year);
+                var durationSplit = p.Duration.Split("час")[0];
+                if (durationSplit[0] == '1') tempDurationList.Add(durationSplit + "час");
+                else tempDurationList.Add(durationSplit + "часа");
+
+            }
+        );
         Countries = tempCountries;
+        MPAAList = tempMPAAList;
+        YearList = tempYearsList.OrderBy(p => p).ToList();
+        DurationList = tempDurationList.OrderBy(p=>p).ToList();
         Genres = new HashSet<string>
         {
             "драма",
@@ -84,39 +120,48 @@
             "биография",
             "мелодрама"
         };
+        RatingList = new HashSet<int>
+        {
+           1,2,3,4,5
+        };
     }
 
-    public void RefreshFilms(IEnumerable<Films> AllFilms)
+    public void FilmChanging()
     {
-        if (SelectedGenres.Count > 0 && SelectedCountry != "Любая страна")
+
+        Films = _context.Films.ToList();
+        if (!string.IsNullOrWhiteSpace(FilmName))
+        {
+            Films = Films.Where(p => p.FilmName.ToLower().Contains(FilmName.ToLower())).ToList();
+        }
+        if (!string.IsNullOrWhiteSpace(SelectedMPAA))
+        {
+            Films = Films.Where(p => p.MPAA == SelectedMPAA).ToList();
+        }
+        if (!string.IsNullOrWhiteSpace(SelectedCountry))
+        {
+            Films = Films.Where(p => p.Country == SelectedCountry).ToList();
+        }
+        if (!string.IsNullOrWhiteSpace(SelectedDuration))
+        {
+            Films = Films.Where(p => p.Duration.Contains(SelectedDuration)).ToList();
+        }
+        if (SelectedYear!=-1)
+        {
+            Films = Films.Where(p => p.Year>=SelectedYear).ToList();
+        }
+        if (SelectedRating !=-1)
+        {
+            Films = Films.Where(p => Math.Round((double)p.Summ / (double)p.Total, 1)>=SelectedRating).ToList();
+        }
+        if (SelectedGenres.Count > 0)
         {
             var TempFilms = new HashSet<Films>();
-            var ThisFilms = AllFilms;
+            var ThisFilms = Films;
             bool contains = false;
             foreach (var film in ThisFilms.ToList())
             {
                 foreach (var genre in SelectedGenres)
-                {
-                    if (film.Genres.Contains(genre)&&film.Country==SelectedCountry) contains = true;
-                    else
-                    {
-                        contains = false;
-                        break;
-                    }
-                }
-                if (contains) TempFilms.Add(film);
-                contains = false;
-            }
-            Films = TempFilms.ToList();
-        } else 
-        if (SelectedGenres.Count > 0)
-        {
-            var TempFilms = new HashSet<Films>();
-            var ThisFilms = AllFilms;
-            bool contains = false;
-            foreach (var film in ThisFilms.ToList())
-            {
-                foreach(var genre in SelectedGenres)
                 {
                     if (film.Genres.Contains(genre)) contains = true;
                     else
@@ -129,41 +174,36 @@
                 contains = false;
             }
             Films = TempFilms.ToList();
-        } else 
-        if (SelectedCountry != "Любая страна")
-        {
-            var TempFilms = new HashSet<Films>();
-            var ThisFilms = AllFilms;
-            foreach (var film in ThisFilms.ToList())
-            {
-                if (film.Country == SelectedCountry) TempFilms.Add(film);
-            }
-            Films = TempFilms.ToList();
-        } else 
-        {
-            Films = AllFilms.ToList();
         }
-    }
 
-    public void FilmChanging()
-    {
-        if (!string.IsNullOrWhiteSpace(FilmName))
-        {
-            var allFilms = _context.Films.ToList();
-            if (!string.IsNullOrWhiteSpace(FilmName))
-                allFilms = allFilms.Where(p => p.FilmName.ToLower().Contains(FilmName.ToLower())).ToList();
-            Films = allFilms;
-        }
-        else
-        {
-            Films = _context.Films.ToList();
-        }
-        RefreshFilms(Films);
     }
 
     public async Task ChooseCountry(string country)
     {
         SelectedCountry = country;
+        FilmChanging();
+    }
+    public async Task ChooseMPAA(string MPAA)
+    {
+        SelectedMPAA = MPAA;
+        FilmChanging();   
+    }
+
+    public async Task ChooseDuration(string Duration)
+    {
+        SelectedDuration = Duration;
+        FilmChanging();
+    }
+
+     public async Task ChooseYear(int Year)
+    {
+        SelectedYear = Year;
+        FilmChanging();
+    }
+
+     public async Task ChooseRating(int Rating)
+    {
+        SelectedRating =Rating;
         FilmChanging();
     }
 

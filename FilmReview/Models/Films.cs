@@ -20,7 +20,7 @@ namespace FilmReview.Models
         [Required]
         public string MPAA { get; set; }
         [Required]
-        public string Year { get; set; }
+        public int Year { get; set; }
         [Required]
         public int Summ { get; set; } = 0;
         [Required]

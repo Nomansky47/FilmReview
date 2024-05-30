@@ -1,0 +1,30 @@
+﻿@model FilmReview.Models.Videos
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Videos</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Link)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Link)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Films)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Films.About)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.VideoID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
