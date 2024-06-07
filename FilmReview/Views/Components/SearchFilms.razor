@@ -70,21 +70,21 @@
 </Div>
 
 @code {
-    public string FilmName;
-    public string error = "Картинка фильма";
-    public List<Films> Films { get; set; }
-    public IEnumerable<string> Genres { get; set; }
-    public IEnumerable<string> Countries { get; set; }
-    public IEnumerable<string> MPAAList { get; set; }
-    public IEnumerable<string> DurationList { get; set; }
-    public IEnumerable<int> YearList { get; set; }
-    public IEnumerable<int> RatingList { get; set; }
-    public HashSet<string> SelectedGenres { get; set; }
-    public string SelectedCountry { get; set; } = "";
-    public string SelectedMPAA { get; set; } = "";
-    public string SelectedDuration { get; set; } = "";
-    public int SelectedRating { get; set; } = -1;
-    public int SelectedYear { get; set; } = -1;
+    private string FilmName;
+    private string error = "Картинка фильма";
+    private List<Films> Films { get; set; }
+    private IEnumerable<string> Genres { get; set; }
+    private IEnumerable<string> Countries { get; set; }
+    private IEnumerable<string> MPAAList { get; set; }
+    private IEnumerable<string> DurationList { get; set; }
+    private IEnumerable<int> YearList { get; set; }
+    private IEnumerable<int> RatingList { get; set; }
+    private HashSet<string> SelectedGenres { get; set; }
+    private string SelectedCountry { get; set; } = "";
+    private string SelectedMPAA { get; set; } = "";
+    private string SelectedDuration { get; set; } = "";
+    private int SelectedRating { get; set; } = -1;
+    private int SelectedYear { get; set; } = -1;
 
     protected override async Task OnInitializedAsync()
     {
@@ -95,40 +95,31 @@
         var tempMPAAList = new HashSet<string>();
         var tempDurationList = new HashSet<string>();
         var tempYearsList = new HashSet<int>();
-        allFilms.ForEach(p =>
-            { tempCountries.Add(p.Country);
-                tempMPAAList.Add(p.MPAA);
-                tempYearsList.Add(p.Year);
-                var durationSplit = p.Duration.Split("час")[0];
+        var tempGenresList = new HashSet<string>();
+        foreach(var p in allFilms)
+        {
+            tempCountries.Add(p.Country);
+            tempMPAAList.Add(p.MPAA);
+            tempYearsList.Add(p.Year);
+            var splitGenres=p.Genres.Split(", ");
+            splitGenres.ToList().ForEach(p =>tempGenresList.Add(p));
+            var durationSplit = p.Duration.Split("час")[0];
                 if (durationSplit[0] == '1') tempDurationList.Add(durationSplit + "час");
                 else tempDurationList.Add(durationSplit + "часа");
-
             }
-        );
         Countries = tempCountries;
         MPAAList = tempMPAAList;
         YearList = tempYearsList.OrderBy(p => p).ToList();
         DurationList = tempDurationList.OrderBy(p=>p).ToList();
-        Genres = new HashSet<string>
-        {
-            "драма",
-            "боевик",
-            "комедия",
-            "триллер",
-            "исторический",
-            "фантастика",
-            "биография",
-            "мелодрама"
-        };
+        Genres = tempGenresList;
         RatingList = new HashSet<int>
         {
            1,2,3,4,5
         };
     }
 
-    public void FilmChanging()
+    private void FilmChanging()
     {
-
         Films = _context.Films.ToList();
         if (!string.IsNullOrWhiteSpace(FilmName))
         {
@@ -178,36 +169,36 @@
 
     }
 
-    public async Task ChooseCountry(string country)
+    private async Task ChooseCountry(string country)
     {
         SelectedCountry = country;
         FilmChanging();
     }
-    public async Task ChooseMPAA(string MPAA)
+    private async Task ChooseMPAA(string MPAA)
     {
         SelectedMPAA = MPAA;
         FilmChanging();   
     }
 
-    public async Task ChooseDuration(string Duration)
+    private async Task ChooseDuration(string Duration)
     {
         SelectedDuration = Duration;
         FilmChanging();
     }
 
-     public async Task ChooseYear(int Year)
+    private async Task ChooseYear(int Year)
     {
         SelectedYear = Year;
         FilmChanging();
     }
 
-     public async Task ChooseRating(int Rating)
+    private async Task ChooseRating(int Rating)
     {
         SelectedRating =Rating;
         FilmChanging();
     }
 
-    public async Task ChooseGenre(string genre)
+    private async Task ChooseGenre(string genre)
     {
         if (!SelectedGenres.Contains(genre))
             SelectedGenres.Add(genre);
@@ -215,9 +206,9 @@
         FilmChanging();
     }
 
-    public async Task FilmNameChanged(string value)
+    private async Task FilmNameChanged(string name)
     {
-        FilmName=value;
+        FilmName=name;
         FilmChanging();
     }
 }
