@@ -123,9 +123,9 @@
 
     private async Task SaveReg()
     {
-        if (NickName != "" && Password2 != "" && Surname != "" && Name != "" && Password != "" && Login != "")
+        if (!string.IsNullOrWhiteSpace(NickName) && !string.IsNullOrWhiteSpace(Password2) && !string.IsNullOrWhiteSpace(Surname) && !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Password)&& !string.IsNullOrWhiteSpace(Login))
         {
-            if (!(NickName.Length>20&&Password.Length>50&&Surname.Length>50&&Name.Length>50&&Patronymic.Length>50&&Password2.Length>50))
+            if (!(NickName.Length>20)&&!(Password.Length>50)&&!(Surname.Length>50)&&!(Name.Length>50)&&!(Patronymic.Length>50)&&!(Password2.Length>50))
             {
                 var finduser = _context.Users.FirstOrDefault(p => p.UserLogin == Login);
                 if (finduser == null)
@@ -138,6 +138,7 @@
                         user.UserLogin = Login;
                         user.Surname = Surname;
                         user.Name = Name;
+                        if (!string.IsNullOrWhiteSpace(Patronymic))
                         user.Patronymic = Patronymic;
                         await ModalReg.Hide();
                         byte[] passwordBytes = Encoding.UTF8.GetBytes(Password);
@@ -162,13 +163,13 @@
                 }
                 else
                 {
-                    Message = "Введенные данные слишком длинны!";
+                    Message = "Пользователь с таким логином уже существует!";
                     await SnackBarError.Show();
                 }
             }
             else
             {
-                Message = "Пользователь с таким логином уже существует!";
+                Message = "Введенные данные слишком длинны!";
                 await SnackBarError.Show();
             }
         }
